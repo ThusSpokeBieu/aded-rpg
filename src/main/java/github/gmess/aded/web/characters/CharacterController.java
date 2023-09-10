@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/characters")
-public class CharacterController {
+public final class CharacterController {
 
     @GetMapping()
     public ResponseEntity<String> get() {
