@@ -1,23 +1,23 @@
-package github.gmess.aded.application.characters;
+package github.gmess.aded.application.characters.create;
 
 import github.gmess.aded.domain.aggregates.characters.Character;
 
-public record CharacterOutput(
+public record CreateCharacterOutput(
         String id,
         String characterClass,
         String archetype
 ) {
 
-    public static CharacterOutput from(
+    public static CreateCharacterOutput from(
             final String anId,
             final String aCharacterClass,
             final String aArchetype
     ) {
-        return new CharacterOutput(anId, aCharacterClass, aArchetype);
+        return new CreateCharacterOutput(anId, aCharacterClass, aArchetype);
     }
 
-    public static CharacterOutput from(final Character aCharacter) {
-        return new CharacterOutput(
+    public static CreateCharacterOutput from(final Character aCharacter) {
+        return new CreateCharacterOutput(
                 aCharacter.getId().getValue(),
                 aCharacter.getCharacterClass(),
                 aCharacter.getArchetype().name()

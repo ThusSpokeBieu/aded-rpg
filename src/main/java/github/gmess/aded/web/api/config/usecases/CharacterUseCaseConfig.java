@@ -2,6 +2,8 @@ package github.gmess.aded.web.api.config.usecases;
 
 import github.gmess.aded.application.characters.create.CreateCharacterUseCase;
 import github.gmess.aded.application.characters.create.DefaultCreateCharacterUseCase;
+import github.gmess.aded.application.characters.retrieve.list.DefaultListCharacterUseCase;
+import github.gmess.aded.application.characters.retrieve.list.ListCharacterUseCase;
 import github.gmess.aded.domain.aggregates.characters.CharacterGateway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +19,11 @@ public class CharacterUseCaseConfig {
     @Bean
     public CreateCharacterUseCase createCategoryUseCase() {
         return new DefaultCreateCharacterUseCase(gateway);
+    }
+
+    @Bean
+    public ListCharacterUseCase listCharacterUseCase() {
+        return new DefaultListCharacterUseCase(gateway);
     }
 
 }
