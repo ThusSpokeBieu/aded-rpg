@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,10 +62,10 @@ public interface CharacterAPI {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
-    @Operation(summary = "Update a category by it's identifier")
+    @Operation(summary = "Update a character by it's identifier")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Category updated successfully"),
-            @ApiResponse(responseCode = "404", description = "Category was not found"),
+            @ApiResponse(responseCode = "200", description = "Character updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Character was not found"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
     ResponseEntity<?> updateById(@PathVariable(name = "id") String id, @RequestBody UpdateCharacterRequest input);
@@ -76,10 +75,10 @@ public interface CharacterAPI {
             produces = APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Operation(summary = "Delete a category by it's identifier")
+    @Operation(summary = "Delete a character by it's identifier")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Category deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Category was not found"),
+            @ApiResponse(responseCode = "204", description = "Character deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Character was not found"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
     void deleteById(@PathVariable(name = "id") String id);

@@ -25,32 +25,38 @@ public final class CharacterDbGateway implements CharacterGateway {
     private final CharacterRepository repo;
 
     @Override
-    public Character create(final Character aCharacter) {
-        return save(aCharacter);
+    public Character create(final Character character) {
+        return save(character);
     }
 
     @Override
-    public void deleteById(final CharacterID anId) {
-        final String anIdValue = anId.getValue();
-        if (this.repo.existsById(anIdValue)) {
-            this.repo.deleteById(anIdValue);
+    public Optional<Character> findById(final CharacterID id) {
+        return repo.findById(id.getUUID())
+                .map(CharacterJpaEntity::toAggregate);
+    }
+
+    @Override
+    public void deleteById(final CharacterID id) {
+        final var uuid = id.getUUID();
+        if (this.repo.existsById(uuid)) {
+            this.repo.deleteById(uuid);
         }
     }
 
     @Override
-    public Character update(final Character aCharacter) {
-        return save(aCharacter);
+    public Character update(final Character character) {
+        return save(character);
     }
 
     @Override
-    public Pagination<Character> findAll(final SearchQuery aQuery) {
+    public Pagination<Character> findAll(final SearchQuery query) {
         final var page = PageRequest.of(
-                aQuery.page(),
-                aQuery.perPage(),
-                Sort.by(Direction.fromString(aQuery.direction()), aQuery.sort())
+                query.page(),
+                query.perPage(),
+                Sort.by(Direction.fromString(query.direction()), query.sort())
         );
 
-        final var specifications = Optional.ofNullable(aQuery.terms())
+        final var specifications = Optional.ofNullable(query.terms())
                 .filter(str -> !str.isBlank())
                 .map(this::assembleSpecification)
                 .orElse(null);
@@ -70,7 +76,7 @@ public final class CharacterDbGateway implements CharacterGateway {
     public List<CharacterID> existsByIds(final Iterable<CharacterID> categoryIDs) {
 
         final var ids = StreamSupport.stream(categoryIDs.spliterator(), false)
-                .map(CharacterID::getValue)
+                .map(CharacterID::getUUID)
                 .toList();
 
         return this.repo.existsByIds(ids).stream()
@@ -78,8 +84,8 @@ public final class CharacterDbGateway implements CharacterGateway {
                 .toList();
     }
 
-    private Character save(final Character aCharacter) {
-        return this.repo.save(CharacterJpaEntity.from(aCharacter)).toAggregate();
+    private Character save(final Character character) {
+        return this.repo.save(CharacterJpaEntity.from(character)).toAggregate();
     }
 
     private Specification<CharacterJpaEntity> assembleSpecification(final String str) {

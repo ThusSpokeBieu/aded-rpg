@@ -8,7 +8,7 @@ import io.vavr.control.Try;
 
 import static io.vavr.control.Either.left;
 
-public class DefaultCreateCharacterUseCase extends CreateCharacterUseCase {
+public final class DefaultCreateCharacterUseCase extends CreateCharacterUseCase {
 
     private final CharacterGateway gateway;
 

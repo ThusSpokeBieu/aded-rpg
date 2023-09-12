@@ -221,6 +221,28 @@ public final class Character extends AggregateRoot<CharacterID> {
         }
     }
 
+    public Character update(
+            final String aCharacterClass,
+            final String stringArchetype,
+            final int intHp,
+            final int intStrength,
+            final int intDefense,
+            final int intAgility,
+            final int intDiceQuantity,
+            final String stringDiceType
+    ) {
+        characterClass = aCharacterClass;
+        archetype = CharacterArchetype.from(stringArchetype);
+        hp = Hp.from(intHp);
+        strength = Strength.from(intStrength);
+        defense = Defense.from(intDefense);
+        agility = Agility.from(intAgility);
+        diceQuantity = intDiceQuantity;
+        dice = Dice.from(stringDiceType);
+        updatedAt = InstantUtils.now();
+        return this;
+    }
+
     public Tuple4<Integer, Integer, Integer, Integer> attack() {
         final var roll = D12.rollOnceAndSum();
         final var result = roll + strength.getValue() + agility.getValue();

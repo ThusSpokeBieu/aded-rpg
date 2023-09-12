@@ -8,7 +8,7 @@ import github.gmess.aded.web.api.characters.contracts.CharacterResponse;
 
 import java.util.Objects;
 
-public class DefaultListCharacterUseCase extends ListCharacterUseCase {
+public final class DefaultListCharacterUseCase extends ListCharacterUseCase {
 
     private final CharacterGateway gateway;
 
