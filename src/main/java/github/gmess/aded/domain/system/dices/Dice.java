@@ -1,9 +1,10 @@
 package github.gmess.aded.domain.system.dices;
 
 import github.gmess.aded.domain.exceptions.system.DiceException;
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
 import lombok.Getter;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -21,31 +22,60 @@ public enum Dice {
     private final int sides;
     private static final Random random = new Random();
 
-    Dice(int sides) {
+    Dice(final int sides) {
         this.sides = sides;
+    }
+
+    public static Dice from(final String diceType) {
+        return switch (diceType.toUpperCase()) {
+            case "D4" -> D4;
+            case "D6" -> D6;
+            case "D8" -> D8;
+            case "D10" -> D10;
+            case "D12" -> D12;
+            case "D20" -> D20;
+            case "D100" -> D100;
+            default -> throw new DiceException("Dice type is unknown: " + diceType);
+        };
+    }
+
+    public static Dice from(final int sides) {
+        return switch (sides) {
+            case 4 -> D4;
+            case 6 -> D6;
+            case 8 -> D8;
+            case 10 -> D10;
+            case 12 -> D12;
+            case 20 -> D20;
+            case 100 -> D100;
+            default -> throw new DiceException("Dice type is unknown this number of sides: " + sides);
+        };
     }
 
     public int[] roll() {
         return roll(1);
     }
 
-    public int[] roll(int quantity) {
+    public int[] roll(final int quantity) {
         validateQuantity(quantity);
 
-        int minDiceResult = 1;
-        int maxDiceResult = sides + 1;
+        final int minDiceResult = 1;
+        final int maxDiceResult = sides + 1;
 
         return IntStream.range(0, quantity)
                 .map(i -> random.nextInt(minDiceResult, maxDiceResult))
                 .toArray();
     }
 
-    public int sum(int[] results) {
+    public int sum(final int[] results) {
         return Arrays.stream(results).sum();
     }
 
-    public int rollAndSum(int quantity) {
-        return Arrays.stream(roll(quantity)).sum();
+    public Tuple2<int[], Integer> rollAndSum(final int quantity) {
+        final var results = roll(quantity);
+        final var resultsSum = sum(results);
+
+        return Tuple.of(results, resultsSum);
     }
 
     public int rollOnceAndSum() {
@@ -60,6 +90,22 @@ public enum Dice {
         if(quantity > 1000) {
             throw new DiceException("Dice - Quantity of dices must not be greater than 1000.");
         }
+    }
+
+    public static int[] roll(int quantity, Dice dice) {
+        return dice.roll(quantity);
+    }
+
+    public static int[] roll(Dice dice) {
+        return dice.roll();
+    }
+
+    public static Tuple2<int[], Integer> rollAndSum(int quantity, Dice dice){
+        return dice.rollAndSum(quantity);
+    }
+
+    public static int rollOnceAndSum(Dice dice) {
+        return dice.rollOnceAndSum();
     }
 
 }

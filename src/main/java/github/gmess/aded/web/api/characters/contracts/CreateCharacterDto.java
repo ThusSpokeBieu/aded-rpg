@@ -1,8 +1,8 @@
-package github.gmess.aded.application.characters.dto;
+package github.gmess.aded.web.api.characters.contracts;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record CharacterDto (
+public record CreateCharacterDto (
     @NotBlank String name,
     @NotBlank String race
 ) { }

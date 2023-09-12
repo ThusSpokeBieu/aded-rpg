@@ -20,6 +20,7 @@ public class NotFoundException extends DomainException {
                 anAggregate.getSimpleName(),
                 id.getValue()
         );
+
         return new NotFoundException(anError, Collections.emptyList());
     }
 }
