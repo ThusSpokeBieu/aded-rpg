@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,7 @@ import java.util.stream.StreamSupport;
 import static github.gmess.aded.infrastructure.utils.SpecificationUtils.like;
 
 @RequiredArgsConstructor
+@Component
 public final class CharacterDbGateway implements CharacterGateway {
 
     private final CharacterRepository repo;

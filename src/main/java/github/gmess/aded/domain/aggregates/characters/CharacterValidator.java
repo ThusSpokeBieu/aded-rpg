@@ -1,11 +1,13 @@
 package github.gmess.aded.domain.aggregates.characters;
 
+import github.gmess.aded.domain.aggregates.characters.vo.CharacterArchetype;
 import github.gmess.aded.domain.aggregates.characters.vo.attributes.Agility;
 import github.gmess.aded.domain.aggregates.characters.vo.attributes.Defense;
 import github.gmess.aded.domain.aggregates.characters.vo.attributes.Hp;
 import github.gmess.aded.domain.aggregates.characters.vo.attributes.Strength;
 import github.gmess.aded.domain.exceptions.Error;
 import github.gmess.aded.domain.exceptions.aggregates.characters.CharacterAttributeException;
+import github.gmess.aded.domain.system.dices.Dice;
 import github.gmess.aded.domain.validation.ValidationHandler;
 import github.gmess.aded.domain.validation.Validator;
 
@@ -23,9 +25,11 @@ public final class CharacterValidator extends Validator {
     }
     @Override
     public void validate() {
+        checkArchetypeConstraints();
         checkCharacterClassConstraints();
         checkAttributeConstraints();
         checkDiceConstraints();
+
     }
 
     private void checkCharacterClassConstraints() {
@@ -91,6 +95,7 @@ public final class CharacterValidator extends Validator {
     }
 
     private void checkDiceConstraints() {
+        checkDiceTypeConstraints();
         final var diceQuantity = this.character.getDiceQuantity();
 
         if (diceQuantity < 1) {
@@ -101,6 +106,26 @@ public final class CharacterValidator extends Validator {
         if (diceQuantity > 10) {
             this.validationHandler().append(new Error("'dice quantity' must not be greater than 10"));
             return;
+        }
+    }
+
+    public void checkArchetypeConstraints() {
+        final var archetype = this.character.getArchetype();
+
+        if (archetype == CharacterArchetype.Error) {
+            validationHandler()
+                    .append(
+                            new Error("Archetype - Archetype must 'Hero' or 'Monster'"));
+        }
+    }
+
+    public void checkDiceTypeConstraints() {
+        final var archetype = this.character.getDice();
+
+        if (archetype == Dice.ERROR) {
+            validationHandler()
+                    .append(
+                            new Error("Dice - Dice must be a valid one 'D4', 'D6', 'D10', 'D12', 'D20', or 'D100'"));
         }
     }
 }

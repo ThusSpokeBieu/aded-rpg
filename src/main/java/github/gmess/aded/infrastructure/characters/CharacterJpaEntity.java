@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity(name = "Character")
 @Table(name = "characters")
@@ -16,7 +17,7 @@ import java.time.Instant;
 public final class CharacterJpaEntity {
 
     @Id
-    private String id;
+    private UUID id;
     private String characterClass;
     private String archetype;
     private int hp;
@@ -31,7 +32,7 @@ public final class CharacterJpaEntity {
     public CharacterJpaEntity() {}
 
     public CharacterJpaEntity(
-            final String id,
+            final UUID id,
             final String characterClass,
             final String archetype,
             final int hp,
@@ -57,7 +58,7 @@ public final class CharacterJpaEntity {
 
     public static CharacterJpaEntity from(final Character aggregate) {
         return new CharacterJpaEntity(
-                aggregate.getId().getValue(),
+                aggregate.getId().getUUID(),
                 aggregate.getCharacterClass(),
                 aggregate.getArchetype().name(),
                 aggregate.getHp().getValue(),

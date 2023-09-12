@@ -60,7 +60,6 @@ public final class Character extends AggregateRoot<CharacterID> {
         this.dice = Objects.requireNonNull(dice, "'dice' must not be null");
         this.createdAt = Objects.requireNonNull(aCreatedAt, "'createdAt' must not be null");
         this.updatedAt = Objects.requireNonNull(aUpdatedAt, "'updatedAt' must not be null");
-        selfValidate();
     }
 
     public static Character newCharacter(
@@ -74,6 +73,38 @@ public final class Character extends AggregateRoot<CharacterID> {
             final String diceType
     ) {
         final var id = CharacterID.unique();
+        final var hp = Hp.from(intHp);
+        final var strength = Strength.from(intStrength);
+        final var defense = Defense.from(intDefense);
+        final var agility = Agility.from(intAgility);
+        final var dice = Dice.from(diceType);
+        final var now = InstantUtils.now();
+        return new Character(
+                id,
+                characterClass,
+                archetype,
+                hp,
+                strength,
+                defense,
+                agility,
+                diceQuantity,
+                dice,
+                now,
+                now);
+    }
+
+    public static Character newCharacter(
+            final String characterClass,
+            final String stringArchetype,
+            final int intHp,
+            final int intStrength,
+            final int intDefense,
+            final int intAgility,
+            final int diceQuantity,
+            final String diceType
+    ) {
+        final var id = CharacterID.unique();
+        final var archetype = CharacterArchetype.from(stringArchetype);
         final var hp = Hp.from(intHp);
         final var strength = Strength.from(intStrength);
         final var defense = Defense.from(intDefense);
@@ -158,7 +189,7 @@ public final class Character extends AggregateRoot<CharacterID> {
 
     public static Character from(CharacterJpaEntity dto) {
         return with(
-                dto.getId(),
+                dto.getId().toString(),
                 dto.getCharacterClass(),
                 dto.getArchetype(),
                 dto.getHp(),

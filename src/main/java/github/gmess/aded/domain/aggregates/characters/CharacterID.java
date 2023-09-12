@@ -31,6 +31,10 @@ public class CharacterID extends Identifier {
         return value;
     }
 
+    public UUID getUUID() {
+        return UUID.fromString(value);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

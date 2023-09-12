@@ -1,10 +1,12 @@
 package github.gmess.aded.domain.system.dices;
 
+import github.gmess.aded.domain.exceptions.Error;
 import github.gmess.aded.domain.exceptions.system.DiceException;
 import io.vavr.Tuple;
 import io.vavr.Tuple2;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -17,7 +19,8 @@ public enum Dice {
     D10(10),
     D12(12),
     D20(20),
-    D100(100);
+    D100(100),
+    ERROR(0);
 
     private final int sides;
     private static final Random random = new Random();
@@ -35,7 +38,7 @@ public enum Dice {
             case "D12" -> D12;
             case "D20" -> D20;
             case "D100" -> D100;
-            default -> throw new DiceException("Dice type is unknown: " + diceType);
+            default -> ERROR;
         };
     }
 
@@ -48,7 +51,7 @@ public enum Dice {
             case 12 -> D12;
             case 20 -> D20;
             case 100 -> D100;
-            default -> throw new DiceException("Dice type is unknown this number of sides: " + sides);
+            default -> ERROR;
         };
     }
 
@@ -84,11 +87,11 @@ public enum Dice {
 
     private void validateQuantity(int quantity) {
         if(quantity < 1) {
-            throw new DiceException("Dice - Quantity of dices must be 1 or greater.");
+            throw new DiceException("Dice - Quantity of dices must be 1 or greater.", new ArrayList<Error>());
         }
 
         if(quantity > 1000) {
-            throw new DiceException("Dice - Quantity of dices must not be greater than 1000.");
+            throw new DiceException("Dice - Quantity of dices must not be greater than 1000.", new ArrayList<Error>());
         }
     }
 

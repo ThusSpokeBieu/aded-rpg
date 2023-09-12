@@ -1,10 +1,13 @@
 package github.gmess.aded.domain.exceptions.system;
 
-import github.gmess.aded.domain.exceptions.NoStacktraceException;
+import github.gmess.aded.domain.exceptions.DomainException;
+import github.gmess.aded.domain.exceptions.Error;
 
-public class DiceException extends NoStacktraceException {
-    public DiceException(String aMessage) {
-        super(aMessage);
+import java.util.List;
+
+public class DiceException extends DomainException {
+    public DiceException(String aMessage, List<Error> errors) {
+        super(aMessage, errors);
     }
 
 }
