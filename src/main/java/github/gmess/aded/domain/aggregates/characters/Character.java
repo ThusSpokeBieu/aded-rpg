@@ -187,23 +187,23 @@ public final class Character extends AggregateRoot<CharacterID> {
                 updatedAt);
     }
 
-    public static Character from(CharacterJpaEntity dto) {
+    public static Character from(CharacterJpaEntity entity) {
         return with(
-                dto.getId().toString(),
-                dto.getCharacterClass(),
-                dto.getArchetype(),
-                dto.getHp(),
-                dto.getStrength(),
-                dto.getDefense(),
-                dto.getAgility(),
-                dto.getDicesQuantity(),
-                dto.getDice(),
-                dto.getCreatedAt(),
-                dto.getUpdatedAt()
+                entity.getId().toString(),
+                entity.getCharacterClass(),
+                entity.getArchetype(),
+                entity.getHp(),
+                entity.getStrength(),
+                entity.getDefense(),
+                entity.getAgility(),
+                entity.getDicesQuantity(),
+                entity.getDice(),
+                entity.getCreatedAt(),
+                entity.getUpdatedAt()
         );
     }
 
-    public CharacterJpaEntity toDto() {
+    public CharacterJpaEntity toEntity() {
         return CharacterJpaEntity.from(this);
     }
 

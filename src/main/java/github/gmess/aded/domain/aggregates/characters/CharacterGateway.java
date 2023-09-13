@@ -8,11 +8,11 @@ import java.util.Optional;
 
 public interface CharacterGateway {
 
-    public Pagination<Character> findAll(final SearchQuery query);
-    public Optional<Character> findById(final CharacterID id);
-    public Character create(final Character character);
-    public void deleteById(final CharacterID id);
-    public Character update(final Character character);
-    public List<CharacterID> existsByIds(final Iterable<CharacterID> ids);
+    Pagination<Character> findAll(final SearchQuery query);
+    Optional<Character> findById(final CharacterID id);
+    Character create(final Character character);
+    void deleteById(final CharacterID id);
+    Character update(final Character character);
+    List<CharacterID> existsByIds(final Iterable<CharacterID> ids);
 
 }

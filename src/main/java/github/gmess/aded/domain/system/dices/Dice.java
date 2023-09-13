@@ -111,4 +111,8 @@ public enum Dice {
         return dice.rollOnceAndSum();
     }
 
+    private static String resultsToString(int[] results) {
+        return Arrays.toString(results);
+    }
+
 }

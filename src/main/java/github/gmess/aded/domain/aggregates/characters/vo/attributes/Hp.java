@@ -16,7 +16,12 @@ public class Hp extends CharacterAttribute {
     }
 
     public int getDamage(final int damage) {
-        return currentHp -= damage;
+        currentHp = currentHp - damage;
+        return currentHp;
+    }
+
+    public int getCurrentHp() {
+        return currentHp;
     }
 
     public int heal(final int heal) {
