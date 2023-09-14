@@ -1,5 +1,6 @@
 package github.gmess.aded.application.battles.pve.attack;
 
+import github.gmess.aded.application.battles.shared.Roll;
 import github.gmess.aded.domain.aggregates.actions.Action;
 
 public record AttackPveBattleOutput(
@@ -19,30 +20,6 @@ public record AttackPveBattleOutput(
         );
     }
 
-    private record Roll(
-            String whoRolled,
-            String dice,
-            String roll,
-            String calculus,
-            int total
-    ) {
-        private static Roll from(Action action) {
-            String dice = String.format(
-                    "%d%s",
-                    action.getDicesQuantity(),
-                    action.getDice().name().toLowerCase()
-            );
-
-            return new Roll(
-                    action.getPlayer(),
-                    dice,
-                    action.getResults(),
-                    action.getCalculus(),
-                    action.getTotalResult()
-            );
-        }
-    }
-
     private record Result(
             String contenderAction,
             String contestedAction,
@@ -57,7 +34,7 @@ public record AttackPveBattleOutput(
         }
 
         private static String formatRollResult(Action action) {
-            return String.format("%s tries to %s, and rolled the dice resulting in: %d",
+            return String.format("%s tries to roll %s, resulting in: %d",
                     action.getPlayer(),
                     action.getTurnType().name(),
                     action.getTotalResult());
@@ -85,7 +62,7 @@ public record AttackPveBattleOutput(
         }
 
         private static String unsuccessfulAttack() {
-            return "%s attack has failed! %s will now counter-attack. Prepare to defend!";
+            return "%s attack has failed! %s will now counter-attack. Prepare to defend!!!";
         }
     }
 }

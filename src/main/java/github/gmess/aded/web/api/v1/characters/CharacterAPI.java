@@ -4,7 +4,6 @@ import github.gmess.aded.domain.search.Pagination;
 import github.gmess.aded.web.api.v1.characters.contracts.CharacterResponse;
 import github.gmess.aded.web.api.v1.characters.contracts.CreateCharacterRequest;
 import github.gmess.aded.web.api.v1.characters.contracts.UpdateCharacterRequest;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

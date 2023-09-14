@@ -4,17 +4,23 @@ import github.gmess.aded.domain.aggregates.actions.Action;
 
 public record InitiativePveBattleOutput(
         int Round,
+        String contenderCurrentHp,
+        String contestedCurrentHp,
         Roll contenderRoll,
         Roll contestedRoll,
         Result results
 ) {
 
     public static InitiativePveBattleOutput from(
-            Action contenderAction,
-            Action contestedAction
+            final String contenderCurrentHp,
+            final String contestedCurrentHp,
+            final Action contenderAction,
+            final Action contestedAction
     ) {
         return new InitiativePveBattleOutput(
                 contenderAction.getRound().get(),
+                contenderCurrentHp,
+                contestedCurrentHp,
                 Roll.from(contenderAction),
                 Roll.from(contestedAction),
                 Result.from(contenderAction, contestedAction)

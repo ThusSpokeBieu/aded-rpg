@@ -1,6 +1,7 @@
 package github.gmess.aded.domain.aggregates.characters;
 
 import github.gmess.aded.domain.AggregateRoot;
+import github.gmess.aded.domain.aggregates.actions.Action;
 import github.gmess.aded.domain.aggregates.characters.vo.CharacterArchetype;
 
 import github.gmess.aded.domain.aggregates.characters.vo.attributes.Agility;
@@ -15,6 +16,7 @@ import github.gmess.aded.domain.validation.ValidationHandler;
 import github.gmess.aded.domain.validation.handler.Notification;
 import github.gmess.aded.infrastructure.characters.CharacterJpaEntity;
 import github.gmess.aded.domain.system.dices.Dice;
+import io.vavr.Tuple2;
 import lombok.Getter;
 import lombok.Setter;
 import static github.gmess.aded.domain.system.dices.Dice.D12;
@@ -213,15 +215,6 @@ public final class Character extends AggregateRoot<CharacterID> {
         new CharacterValidator(this, handler).validate();
     }
 
-    private void selfValidate() {
-        final var notification = Notification.create();
-        validate(notification);
-
-        if (notification.hasError()) {
-            throw new NotificationException("Failed to create a Character", notification);
-        }
-    }
-
     public Character update(
             final String aCharacterClass,
             final String stringArchetype,
@@ -311,8 +304,8 @@ public final class Character extends AggregateRoot<CharacterID> {
     }
 
     public Movement doDamage() {
-        final var rollsAndSum = dice.rollAndSum(diceQuantity);
-        final var results = Arrays.toString(rollsAndSum._1);
+        final Tuple2<int[], Integer> rollsAndSum = dice.rollAndSum(diceQuantity);
+        final String results = Arrays.toString(rollsAndSum._1);
         final var totalDamage = rollsAndSum._2 + strength.getValue();
 
         final var calculus = results + " (" +
@@ -329,7 +322,17 @@ public final class Character extends AggregateRoot<CharacterID> {
                 strength.getValue(),
                 totalDamage
         );
+    }
 
+    public static int receiveDamage(
+            final Character character,
+            final int currentHp,
+            final Action damage) {
+        character.getHp().setCurrentHp(currentHp);
+
+        final var intDamage = damage.getTotalResult();
+
+        return character.getHp().getDamage(intDamage);
     }
 
     public boolean isFaint() {

@@ -23,7 +23,6 @@ public enum Dice {
     ERROR(0);
 
     private final int sides;
-    private static final Random random = new Random();
 
     Dice(final int sides) {
         this.sides = sides;
@@ -61,6 +60,7 @@ public enum Dice {
 
     public int[] roll(final int quantity) {
         validateQuantity(quantity);
+        final Random random = new Random();
 
         final int minDiceResult = 1;
         final int maxDiceResult = sides + 1;

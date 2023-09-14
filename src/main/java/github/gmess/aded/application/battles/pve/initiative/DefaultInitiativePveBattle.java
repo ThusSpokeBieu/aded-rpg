@@ -5,6 +5,7 @@ import github.gmess.aded.domain.aggregates.actions.Action;
 import github.gmess.aded.domain.aggregates.battles.Battle;
 import github.gmess.aded.domain.aggregates.battles.BattleGateway;
 import github.gmess.aded.domain.aggregates.characters.Character;
+import github.gmess.aded.domain.aggregates.characters.vo.attributes.Hp;
 import github.gmess.aded.domain.exceptions.system.TurnException;
 import github.gmess.aded.domain.system.rounds.BattleTurn;
 import github.gmess.aded.domain.system.rounds.Movement;
@@ -46,22 +47,36 @@ public final class DefaultInitiativePveBattle extends InitiativePveBattleUseCase
         final var contestedAction = rollInitiative(
                 battle,
                 battle.getContested(),
-                battle.getContestedCharacter());
+                battle.getContestedCharacter(),
+                contenderAction.getTotalResult());
 
         battle = setTurnOf(battle, contenderAction, contestedAction);
 
         battle.validate(notification);
 
-        return notification.hasError() ? left(notification) : getResults(contenderAction, contestedAction);
+        return notification.hasError() ? left(notification) : getResults(battle, contenderAction, contestedAction);
     }
 
     private Either<Notification, InitiativePveBattleOutput> getResults(
+            Battle battle,
             Action contenderAction,
             Action contestedAction
     ) {
+        final var contenderHp = Hp.toHpString(
+                battle.getContenderCurrentHp(),
+                battle.getContenderCharacter().getHp()
+        );
+
+        final var contestedHp = Hp.toHpString(
+                battle.getContestedCurrentHp(),
+                battle.getContestedCharacter().getHp()
+        );
+
         return Try.of(() -> InitiativePveBattleOutput.from(
-                        contenderAction,
-                        contestedAction))
+                    contenderHp,
+                    contestedHp,
+                    contenderAction,
+                    contestedAction))
                 .toEither()
                 .bimap(Notification::create, out -> out);
     }
@@ -107,11 +122,11 @@ public final class DefaultInitiativePveBattle extends InitiativePveBattleUseCase
     ) {
         if (contenderAction.getTotalResult() > contestedAction.getTotalResult()) {
             battle.setTurnOf(TurnOf.CONTENDER);
+            battle.setTurn(BattleTurn.ATTACK);
         } else {
             battle.setTurnOf(TurnOf.CONTESTED);
+            battle.setTurn(BattleTurn.DEFENSE);
         }
-
-        battle.setTurn(BattleTurn.ATTACK);
 
         return battleGateway.update(battle);
     }

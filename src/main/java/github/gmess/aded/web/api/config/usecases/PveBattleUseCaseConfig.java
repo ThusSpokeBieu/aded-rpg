@@ -3,6 +3,10 @@ package github.gmess.aded.web.api.config.usecases;
 import github.gmess.aded.application.action.create.CreateActionUseCase;
 import github.gmess.aded.application.battles.pve.attack.AttackPveBattleUseCase;
 import github.gmess.aded.application.battles.pve.attack.DefaultAttackPveBattle;
+import github.gmess.aded.application.battles.pve.damage.DamagePveBattleUseCase;
+import github.gmess.aded.application.battles.pve.damage.DefaultDamagePveBattle;
+import github.gmess.aded.application.battles.pve.defense.DefaultDefensePveBattle;
+import github.gmess.aded.application.battles.pve.defense.DefensePveBattleUseCase;
 import github.gmess.aded.application.battles.pve.initiative.DefaultInitiativePveBattle;
 import github.gmess.aded.application.battles.pve.initiative.InitiativePveBattleUseCase;
 import github.gmess.aded.application.battles.pve.start.DefaultStartPveBattle;
@@ -57,5 +61,21 @@ public class PveBattleUseCaseConfig {
             final CreateActionUseCase createActionUseCase
     ) {
         return new DefaultAttackPveBattle(battleGateway, createActionUseCase);
+    }
+
+    @Bean
+    public DamagePveBattleUseCase damagePveBattleUseCase(
+            final BattleGateway battleGateway,
+            final CreateActionUseCase createActionUseCase
+    ) {
+        return new DefaultDamagePveBattle(battleGateway, createActionUseCase);
+    }
+
+    @Bean
+    public DefensePveBattleUseCase defensePveBattleUseCase(
+            final BattleGateway battleGateway,
+            final CreateActionUseCase createActionUseCase
+    ) {
+        return new DefaultDefensePveBattle(battleGateway, createActionUseCase);
     }
 }
