@@ -109,6 +109,7 @@ public class DefaultAttackPveBattle extends AttackPveBattleUseCase {
         } else {
             battle.setTurnOf(TurnOf.CONTESTED);
             battle.setTurn(BattleTurn.DEFENSE);
+            battle.getRound().next();
         }
 
         return battleGateway.update(battle);

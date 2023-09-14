@@ -17,8 +17,6 @@ import java.util.Objects;
 
 import static io.vavr.control.Either.left;
 
-import static github.gmess.aded.domain.exceptions.NotFoundException.notFoundWith;
-
 public final class DefaultInitiativePveBattle extends InitiativePveBattleUseCase {
 
     private final BattleGateway battleGateway;
