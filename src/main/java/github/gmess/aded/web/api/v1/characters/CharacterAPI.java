@@ -1,9 +1,10 @@
-package github.gmess.aded.web.api.characters;
+package github.gmess.aded.web.api.v1.characters;
 
 import github.gmess.aded.domain.search.Pagination;
-import github.gmess.aded.web.api.characters.contracts.CharacterResponse;
-import github.gmess.aded.web.api.characters.contracts.CreateCharacterRequest;
-import github.gmess.aded.web.api.characters.contracts.UpdateCharacterRequest;
+import github.gmess.aded.web.api.v1.characters.contracts.CharacterResponse;
+import github.gmess.aded.web.api.v1.characters.contracts.CreateCharacterRequest;
+import github.gmess.aded.web.api.v1.characters.contracts.UpdateCharacterRequest;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -14,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@RequestMapping(value = "characters")
-@Tag(name = "Character")
+@RequestMapping(value = "v1/characters")
+@Tag(name = "V1 - Character")
 public interface CharacterAPI {
 
     @PostMapping(

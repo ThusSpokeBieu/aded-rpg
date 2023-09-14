@@ -16,7 +16,7 @@ CREATE TABLE archetypes (
     archetype varchar(255) PRIMARY KEY
 );
 
-INSERT INTO archetypes (archetype) VALUES ('Hero'), ('Monster');
+INSERT INTO archetypes (archetype) VALUES ('HERO'), ('MONSTER');
 
 CREATE TABLE characters (
     id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -35,9 +35,9 @@ CREATE TABLE characters (
 INSERT INTO characters
     (archetype, character_class, hp, strength, defense, agility, dices_quantity, dice)
 VALUES
-    ('Hero', 'Warrior', 20, 7, 5, 6, 1, 'D12'),
-    ('Hero', 'Barbarian', 21, 10, 2, 5, 2, 'D8'),
-    ('Hero', 'Knight', 26, 6, 8, 3, 2, 'D6'),
-    ('Monster', 'Orc', 42, 7, 1, 2, 3, 'D4'),
-    ('Monster', 'Giant', 34, 10, 4, 4, 2, 'D6'),
-    ('Monster', 'Werewolf', 34, 7, 4, 7, 2, 'D4');
+    ('HERO', 'Warrior', 20, 7, 5, 6, 1, 'D12'),
+    ('HERO', 'Barbarian', 21, 10, 2, 5, 2, 'D8'),
+    ('HERO', 'Knight', 26, 6, 8, 3, 2, 'D6'),
+    ('MONSTER', 'Orc', 42, 7, 1, 2, 3, 'D4'),
+    ('MONSTER', 'Giant', 34, 10, 4, 4, 2, 'D6'),
+    ('MONSTER', 'Werewolf', 34, 7, 4, 7, 2, 'D4');

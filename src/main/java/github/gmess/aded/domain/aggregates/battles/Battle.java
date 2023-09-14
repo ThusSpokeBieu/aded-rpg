@@ -10,28 +10,30 @@ import github.gmess.aded.domain.aggregates.characters.vo.attributes.Hp;
 import github.gmess.aded.domain.utils.InstantUtils;
 import github.gmess.aded.domain.validation.ValidationHandler;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
 @Getter
+@Setter
 public final class Battle extends AggregateRoot<BattleID> {
     private final BattleCode code;
     private final String contender;
     private final String contested;
     private final Character contenderCharacter;
     private final Character contestedCharacter;
-    private final Hp contenderCurrentHp;
-    private final Hp contestedCurrentHp;
-    private final BattleRound round;
-    private final BattleTurn turn;
-    private final TurnOf turnOf;
+    private Hp contenderCurrentHp;
+    private Hp contestedCurrentHp;
+    private BattleRound round;
+    private BattleTurn turn;
+    private TurnOf turnOf;
     private boolean isActive;
-    private final String winner;
+    private String winner;
     private final Instant startedAt;
-    private final Instant lastMoveAt;
-    private final Instant endedAt;
+    private Instant lastMoveAt;
+    private Instant endedAt;
 
     private Battle(
             final BattleID id,
@@ -132,6 +134,7 @@ public final class Battle extends AggregateRoot<BattleID> {
                 endedAt
         );
     }
+
 
     @Override
     public void validate(ValidationHandler handler) {

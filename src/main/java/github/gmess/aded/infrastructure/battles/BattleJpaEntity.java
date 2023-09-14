@@ -17,7 +17,7 @@ import java.util.UUID;
 @Table(name = "battles")
 @Getter
 @Setter
-public class BattleJpaEntity {
+public final class BattleJpaEntity {
 
     @Id
     private UUID id;

@@ -8,19 +8,20 @@ import github.gmess.aded.domain.aggregates.characters.vo.attributes.Defense;
 import github.gmess.aded.domain.aggregates.characters.vo.attributes.Hp;
 import github.gmess.aded.domain.aggregates.characters.vo.attributes.Strength;
 import github.gmess.aded.domain.exceptions.NotificationException;
+import github.gmess.aded.domain.system.rounds.BattleTurn;
+import github.gmess.aded.domain.system.rounds.Movement;
 import github.gmess.aded.domain.utils.InstantUtils;
 import github.gmess.aded.domain.validation.ValidationHandler;
 import github.gmess.aded.domain.validation.handler.Notification;
 import github.gmess.aded.infrastructure.characters.CharacterJpaEntity;
-import io.vavr.Tuple;
 import github.gmess.aded.domain.system.dices.Dice;
-import io.vavr.Tuple2;
-import io.vavr.Tuple4;
 import lombok.Getter;
 import lombok.Setter;
 import static github.gmess.aded.domain.system.dices.Dice.D12;
+import static github.gmess.aded.domain.system.dices.Dice.D20;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Objects;
 
 @Getter
@@ -243,35 +244,92 @@ public final class Character extends AggregateRoot<CharacterID> {
         return this;
     }
 
-    public Tuple4<Integer, Integer, Integer, Integer> attack() {
+    public Movement rollAttack() {
         final var roll = D12.rollOnceAndSum();
-        final var result = roll + strength.getValue() + agility.getValue();
+        final var modifiers = strength.getValue() + agility.getValue();
+        final var result = roll + modifiers;
 
-        return Tuple.of(roll, strength.getValue(), agility.getValue(), result);
+        final var calculus = roll +
+                " (1d12) " +
+                strength.getValue() +
+                " (strength) + " +
+                agility.getValue() +
+                " (agility)";
+
+        return Movement.with(
+                characterClass,
+                BattleTurn.ATTACK,
+                1,
+                D12,
+                String.valueOf(roll),
+                calculus,
+                modifiers,
+                result
+        );
     }
 
-    public Tuple4<Integer, Integer, Integer, Integer> defend() {
+    public Movement rollDefense() {
         final var roll = D12.rollOnceAndSum();
-        final var result = roll + defense.getValue() + agility.getValue();
+        final var modifiers = defense.getValue() + agility.getValue();
+        final var result = roll + modifiers;
 
-        return Tuple.of(roll, defense.getValue(), agility.getValue(), result);
+        final var calculus = roll +
+                " (1d12) " +
+                defense.getValue() +
+                " (defense) + " +
+                agility.getValue() +
+                " (agility)";
+
+        final var rollString = String.valueOf(roll);
+
+        return Movement.with(
+                characterClass,
+                BattleTurn.DEFENSE,
+                1,
+                D12,
+                String.valueOf(roll),
+                calculus,
+                modifiers,
+                result
+        );
     }
 
-    public Tuple2<Integer, Integer> receiveDamage(final int damage) {
-        final var currentHp = hp.getDamage(damage);
+    public Movement rollInitiative() {
+        final var result = D20.rollOnceAndSum();
+        final var calculus = result + " (1d20)";
 
-        return Tuple.of(currentHp, hp.getValue());
+        return Movement.with(
+                characterClass,
+                BattleTurn.INITIATIVE,
+                1,
+                D20,
+                String.valueOf(result),
+                calculus,
+                0,
+                result
+        );
     }
 
-    public Tuple4<int[], Integer, Integer, Integer> doDamage() {
+    public Movement doDamage() {
         final var rollsAndSum = dice.rollAndSum(diceQuantity);
+        final var results = Arrays.toString(rollsAndSum._1);
         final var totalDamage = rollsAndSum._2 + strength.getValue();
 
-        return Tuple.of(
-                rollsAndSum._1,
-                rollsAndSum._2,
+        final var calculus = results + " (" +
+                diceQuantity + dice.name().toLowerCase() + ") + " +
+                strength.getValue() + " (strength)";
+
+        return Movement.with(
+                characterClass,
+                BattleTurn.DAMAGE,
+                diceQuantity,
+                dice,
+                results,
+                calculus,
                 strength.getValue(),
-                totalDamage);
+                totalDamage
+        );
+
     }
 
     public boolean isFaint() {

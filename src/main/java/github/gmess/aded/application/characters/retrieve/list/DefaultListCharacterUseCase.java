@@ -1,10 +1,9 @@
 package github.gmess.aded.application.characters.retrieve.list;
 
-import github.gmess.aded.application.characters.create.CreateCharacterOutput;
 import github.gmess.aded.domain.aggregates.characters.CharacterGateway;
 import github.gmess.aded.domain.search.Pagination;
 import github.gmess.aded.domain.search.SearchQuery;
-import github.gmess.aded.web.api.characters.contracts.CharacterResponse;
+import github.gmess.aded.web.api.v1.characters.contracts.CharacterResponse;
 
 import java.util.Objects;
 

@@ -2,6 +2,7 @@ package github.gmess.aded.web.api.config.advice;
 
 import github.gmess.aded.domain.exceptions.DomainException;
 import github.gmess.aded.domain.exceptions.Error;
+import github.gmess.aded.domain.exceptions.ForbiddenException;
 import github.gmess.aded.domain.exceptions.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,11 @@ import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(value = ForbiddenException.class)
+    public ResponseEntity<?> handleForbiddenException(final ForbiddenException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ApiError.from(ex));
+    }
 
     @ExceptionHandler(value = NotFoundException.class)
     public ResponseEntity<?> handleNotFoundException(final NotFoundException ex) {

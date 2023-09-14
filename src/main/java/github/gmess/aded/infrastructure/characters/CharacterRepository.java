@@ -1,6 +1,7 @@
 package github.gmess.aded.infrastructure.characters;
 
 import io.lettuce.core.dynamic.annotation.Param;
+import io.vavr.control.Option;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -15,6 +16,14 @@ import java.util.UUID;
 public interface CharacterRepository extends JpaRepository<CharacterJpaEntity, UUID> {
 
     Page<CharacterJpaEntity> findAll(Specification<CharacterJpaEntity> whereClause, Pageable page);
+
+    @Query(value = "select c from Character c where c.id = :id")
+    Option<CharacterJpaEntity> findByIdOption(@Param("id") UUID id);
+
+    Option<CharacterJpaEntity> findByCharacterClass(String characterClass);
+
+    @Query(value = "SELECT * FROM characters WHERE archetype = 'MONSTER' ORDER BY RANDOM() LIMIT 1", nativeQuery = true)
+    Option<CharacterJpaEntity> findRandomMonster();
 
     @Query(value = "select c.id from Character c where c.id in :ids")
     List<UUID> existsByIds(@Param("ids") List<UUID> ids);

@@ -1,7 +1,6 @@
 package github.gmess.aded.domain.aggregates.characters.vo.attributes;
 
 import github.gmess.aded.domain.exceptions.aggregates.characters.CharacterAttributeException;
-import github.gmess.aded.domain.exceptions.system.DiceException;
 
 public class Hp extends CharacterAttribute {
     private int currentHp;

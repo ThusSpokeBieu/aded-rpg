@@ -5,6 +5,7 @@ import github.gmess.aded.domain.aggregates.characters.CharacterGateway;
 import github.gmess.aded.domain.aggregates.characters.CharacterID;
 import github.gmess.aded.domain.search.Pagination;
 import github.gmess.aded.domain.search.SearchQuery;
+import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -30,8 +31,20 @@ public final class CharacterDbGateway implements CharacterGateway {
     }
 
     @Override
-    public Optional<Character> findById(final CharacterID id) {
-        return repo.findById(id.getUUID())
+    public Option<Character> findById(final CharacterID id) {
+        return repo.findByIdOption(id.getUUID())
+                .map(CharacterJpaEntity::toAggregate);
+    }
+
+    @Override
+    public Option<Character> findByCharacterClass(final String character) {
+        return repo.findByCharacterClass(character)
+                .map(CharacterJpaEntity::toAggregate);
+    }
+
+    @Override
+    public Option<Character> getRandomMonster() {
+        return repo.findRandomMonster()
                 .map(CharacterJpaEntity::toAggregate);
     }
 
