@@ -8,4 +8,6 @@ public interface BattleGateway {
     Option<Battle> getBattleByIdOrCode(final String idOrCode);
 
     Battle update(final Battle battle);
+
+    Battle tryGetBattleByIdOrCode(final String idOrCode);
 }

@@ -39,4 +39,17 @@ public interface BattlePveAPI {
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
     ResponseEntity<?> initiative(@PathVariable(name = "id") String id);
+
+    @PatchMapping (
+            value = "attack/{id}",
+            produces = APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Roll you attack action!")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Attack rolls was done successfully!!"),
+            @ApiResponse(responseCode = "403", description = "Battle turn is not ATTACK, you may do the right action in the right time!"),
+            @ApiResponse(responseCode = "404", description = "Battle was not found, may be incorrect ID or BATTLECODE"),
+            @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+    })
+    ResponseEntity<?> attack(@PathVariable(name = "id") String id);
 }

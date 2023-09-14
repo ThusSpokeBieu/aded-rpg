@@ -1,20 +1,18 @@
-package github.gmess.aded.application.battles.pve.initiative;
+package github.gmess.aded.application.battles.pve.attack;
 
 import github.gmess.aded.domain.aggregates.actions.Action;
 
-public record InitiativePveBattleOutput(
-        int Round,
+public record AttackPveBattleOutput(
         Roll contenderRoll,
         Roll contestedRoll,
         Result results
 ) {
 
-    public static InitiativePveBattleOutput from(
+    public static AttackPveBattleOutput from(
             Action contenderAction,
             Action contestedAction
     ) {
-        return new InitiativePveBattleOutput(
-                contenderAction.getRound().get(),
+        return new AttackPveBattleOutput(
                 Roll.from(contenderAction),
                 Roll.from(contestedAction),
                 Result.from(contenderAction, contestedAction)
@@ -59,13 +57,35 @@ public record InitiativePveBattleOutput(
         }
 
         private static String formatRollResult(Action action) {
-            return String.format("%s rolled the dice and got the total result: %d", action.getPlayer(), action.getTotalResult());
+            return String.format("%s tries to %s, and rolled the dice resulting in: %d",
+                    action.getPlayer(),
+                    action.getTurnType().name(),
+                    action.getTotalResult());
         }
 
         private static String getFinalResult(Action contenderAction, Action contestedAction) {
-            String finalResult = "%s will start the battle!";
-            String winner = (contenderAction.getTotalResult() > contestedAction.getTotalResult()) ? contenderAction.getPlayer() : contestedAction.getPlayer();
-            return String.format(finalResult + "  Now you must %s!", winner, (winner.equals(contenderAction.getPlayer()) ? "attack" : "defend"));
+            if (contenderAction.getTotalResult() > contestedAction.getTotalResult())
+            {
+                return successfulAttack()
+                        .formatted(
+                            contenderAction.getPlayer(),
+                            contestedAction.getPlayer()
+                        );
+            }
+
+            return unsuccessfulAttack()
+                    .formatted(
+                            contenderAction.getPlayer(),
+                            contestedAction.getPlayer()
+                    );
+        }
+
+        private static String successfulAttack() {
+            return "%s attack was successful! You've hit %s. Now, it's time to roll for damage!";
+        }
+
+        private static String unsuccessfulAttack() {
+            return "%s attack has failed! %s will now counter-attack. Prepare to defend!";
         }
     }
 }

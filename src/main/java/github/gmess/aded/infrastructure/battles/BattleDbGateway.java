@@ -4,9 +4,12 @@ import github.gmess.aded.domain.aggregates.battles.Battle;
 import github.gmess.aded.domain.aggregates.battles.BattleGateway;
 import github.gmess.aded.domain.aggregates.battles.BattleID;
 import io.vavr.control.Option;
+import io.vavr.control.Try;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
+
+import static github.gmess.aded.domain.exceptions.NotFoundException.notFoundWith;
 
 @Component
 public class BattleDbGateway implements BattleGateway {
@@ -40,6 +43,13 @@ public class BattleDbGateway implements BattleGateway {
     }
 
     @Override
+    public Battle tryGetBattleByIdOrCode(final String input) {
+        return Try.of(() -> getBattleByIdOrCode(input))
+                .getOrElseThrow(notFoundWith(Battle.class, input))
+                .getOrElseThrow(notFoundWith(Battle.class, input));
+    }
+
+    @Override
     public Battle update(Battle battle) {
         return save(battle);
     }
@@ -47,6 +57,5 @@ public class BattleDbGateway implements BattleGateway {
     private Battle save(final Battle battle) {
         return repository.save(BattleJpaEntity.from(battle)).toAggregate();
     }
-
 
 }
