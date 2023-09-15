@@ -2,7 +2,44 @@
 # Advanced Dungeon and Dragons (AD&D)
 Bem-vindo ao Advanced Dungeon and Dragons (AD&D), uma API baseada em Spring Boot que simula um emocionante jogo de RPG. Neste projeto, você encontrará uma estrutura baseada em DDD (Domain-Driven Design) com três Aggregate Roots principais: Characters, Battle, e Actions. Siga este guia para entender como jogar e interagir com a API.
 
-## Visão Geral
+- [Tecnologias](#tecnologias-)
+- [Como instalar/iniciar](#como-instalariniciar)
+- [Documentação e endpoints](#documentação-e-endpoints)
+- [Visão Geral e Regras de jogo](#visão-geral-e-regras-de-jogo)
+- [Disclaimer e Autocrítica](#disclaimer-e-autocrítica)
+
+## Tecnologias 
+- Java 17
+- Spring Boot 3.1.3
+- Postgres SQL
+- JPA/Hibernate
+- Springdoc
+- Flyway
+- Lombok
+- Vavr
+- JUnit
+- Docker (opcional);
+
+## Como instalar/iniciar;
+
+- Você primeiro precisará configurar o ambiente para acessar o banco de dados. Existe já um docker compose para iniciar o postgres caso você queira, basta usar o comando abaixo no root do projeto:
+```bash
+docker compose up -d
+```
+
+- Após configurado, basta rodar a aplicação com o comando: 
+```bash
+./mvn spring-boot:run
+```
+
+- Pode usar qualquer idea de preferência, ou até mesmo outro comando maven para inicializar a aplicação. Ela irá aplicar as migrações do projeto.
+
+## Documentação e endpoints.
+- Uma vez que a aplicação estiver rodando, você pode acessar sua documentação pela url: http://localhost:8080/swagger-ui/index.html/
+<br><br>
+- O open api do spring docs está bem explicativo sobre o cada endpoint faz, além de ter definições de schema e exemplos prontos de payload (body json); 
+
+## Visão Geral e Regras de jogo
 ### Characters
 Os Characters são os personagens/classes do jogo. Eles podem ser heróis ou monstros, cada um com seus atributos específicos. A API oferece um CRUD completo, permitindo que você crie e customize suas classes de personagens.
 
@@ -47,3 +84,29 @@ A API oferece os seguintes endpoints para interagir com o jogo:
 
 ## Comece a Jogar
 Agora que você conhece a estrutura do projeto AD&D e como jogar, comece a explorar a API e crie suas próprias aventuras épicas. Divirta-se e boa sorte nas batalhas!
+
+## Disclaimer e Autocrítica
+
+- Devido ao tempo apertado, houveram algumas dificuldades em conciliar o tempo e cuidar do projeto, por isso, essa primeira versão é desleixada.
+- Muito dela foi feita em GOHORSE, então existe coisas que quebram princípios de um código limpo.
+- Por exemplo: queria muito fazer um vídeo, containerzar a aplicação, fazer testes. Nessas últimas horas que eu tive para fazer isso, surgiram imprevistos (incluindo bug da aplicação que não queria rodar em cli, mas rodava no intellij) que me atrapalhou.
+
+### Coisas a melhorar:
+- Melhorar responsabilidade das classes, existem classes muito grandes.
+- Fazer testes unitários. Só deu para fazer um que não era tão relevante assim.
+- Melhorar os commits, porque foram todos empacotados.
+- Perdi muito tempo em coisas que não agregavam tanto valor (como fugir da obsessão do primitivos optando por sempre usar VO do que tipos primitivos)
+- Algumas funções confusas porque não tive tempo de reorganizá-las depois.
+- Nomeclaturas não seguem a linguagem de domínio, tendo nomeações estranhas.
+- Alguns code smells como números mágicos.
+- Do mais, o projeto foi muito bacana, eu tive muitas ideias no meio do caminho que foram me animando e tornando um pouco megalomaniaco, queria implementar todas. E por isso, as vezes foquei em outras coisas.
+
+### Pontos positivos:
+- Estrutura de pastas e desaclopamento permite a facilidade de refatoração, seguindo o DDD.
+- Códigos rebuscados usando linguagem funcional com VAVR, deixando o código mais elegante e conciso (quando usado bem);
+- Bom funcionamento e documentação com swagger. Funciona para o usuário final. 
+- Recursos interessantes como as buscas por paginação de forma dinâmica.
+
+Dito isso, vou estar fazendo uma branch para incluir um vídeo exemplo da aplicação e fazer as correções do que estiver acima, mas não precisará ser considerado na avaliação.
+
+Obrigado!
