@@ -6,13 +6,16 @@ import github.gmess.aded.domain.aggregates.characters.CharacterID;
 import github.gmess.aded.domain.exceptions.DomainException;
 import github.gmess.aded.domain.exceptions.NotFoundException;
 import github.gmess.aded.domain.validation.handler.Notification;
-import github.gmess.aded.web.api.characters.contracts.CharacterResponse;
+import github.gmess.aded.web.api.v1.characters.contracts.CharacterResponse;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 
 import java.util.function.Supplier;
 
 import static io.vavr.control.Either.left;
+import static github.gmess.aded.domain.exceptions.NotFoundException.notFoundWith;
+
+
 public final class DefaultUpdateCharacterUseCase extends UpdateCharacterUseCase {
 
     private final CharacterGateway gateway;
@@ -23,10 +26,7 @@ public final class DefaultUpdateCharacterUseCase extends UpdateCharacterUseCase 
 
     @Override
     public Either<Notification, CharacterResponse> execute(UpdateCharacterCommand command) {
-        final var id = CharacterID.from(command.id());
-
-        final var character = gateway.findById(id)
-                .orElseThrow(notFound(id));
+        final var character = tryGetCharacterById(command.id());
 
         final var notification = Notification.create();
 
@@ -39,8 +39,9 @@ public final class DefaultUpdateCharacterUseCase extends UpdateCharacterUseCase 
                 command.agility(),
                 command.dicesQuantity(),
                 command.dice()
-        )
-                .validate(notification);
+        );
+
+        character.validate(notification);
 
         return notification.hasError() ? left(notification) : update(character);
     }
@@ -49,6 +50,16 @@ public final class DefaultUpdateCharacterUseCase extends UpdateCharacterUseCase 
         return Try.of(() -> gateway.update(character))
                 .toEither()
                 .bimap(Notification::create, CharacterResponse::from);
+    }
+
+    private Character tryGetCharacterById(final String id) {
+        return Try.of( () -> {
+            final var uuid = CharacterID.from(id);
+
+            return gateway.findById(uuid)
+                    .getOrElseThrow(notFound(uuid));
+        })
+                .getOrElseThrow(notFoundWith(Character.class, id));
     }
 
     private Supplier<DomainException> notFound(final CharacterID id) {

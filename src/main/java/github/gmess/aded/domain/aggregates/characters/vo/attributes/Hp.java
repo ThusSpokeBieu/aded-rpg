@@ -1,8 +1,11 @@
 package github.gmess.aded.domain.aggregates.characters.vo.attributes;
 
 import github.gmess.aded.domain.exceptions.aggregates.characters.CharacterAttributeException;
-import github.gmess.aded.domain.exceptions.system.DiceException;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class Hp extends CharacterAttribute {
     private int currentHp;
 
@@ -16,7 +19,13 @@ public class Hp extends CharacterAttribute {
     }
 
     public int getDamage(final int damage) {
-        return currentHp -= damage;
+        currentHp = currentHp - damage;
+
+        return currentHp;
+    }
+
+    public int getCurrentHp() {
+        return currentHp;
     }
 
     public int heal(final int heal) {
@@ -41,5 +50,17 @@ public class Hp extends CharacterAttribute {
         if(value > 100) {
             throw new CharacterAttributeException("HP - Max HP of an character must not be greater than 100.");
         }
+    }
+
+    public static String toHpString(int current, int max) {
+        return "%d / %d".formatted(current, max);
+    }
+
+    public static String toHpString(Hp hp) {
+        return toHpString(hp.currentHp, hp.value);
+    }
+
+    public static String toHpString(Hp current, Hp max) {
+        return toHpString(current.currentHp, max.value);
     }
 }

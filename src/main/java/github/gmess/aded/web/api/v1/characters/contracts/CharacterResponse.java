@@ -1,4 +1,4 @@
-package github.gmess.aded.web.api.characters.contracts;
+package github.gmess.aded.web.api.v1.characters.contracts;
 
 import github.gmess.aded.domain.aggregates.characters.Character;
 

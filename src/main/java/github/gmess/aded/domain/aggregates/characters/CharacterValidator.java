@@ -112,7 +112,7 @@ public final class CharacterValidator extends Validator {
     public void checkArchetypeConstraints() {
         final var archetype = this.character.getArchetype();
 
-        if (archetype == CharacterArchetype.Error) {
+        if (archetype == CharacterArchetype.ERROR) {
             validationHandler()
                     .append(
                             new Error("Archetype - Archetype must 'Hero' or 'Monster'"));
