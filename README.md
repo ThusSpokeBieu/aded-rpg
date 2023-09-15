@@ -38,9 +38,9 @@ docker compose up -d
 
 ## Outros meios 
 - Pode rodar a aplicação por outros meios também sem problema, 
-- 
+
 ## Documentação e endpoints.
-- Uma vez que a aplicação estiver rodando, você pode acessar sua documentação pela url: http://localhost:8080/swagger-ui/index.html/
+- Uma vez que a aplicação estiver rodando, você pode acessar sua documentação pela url: http://localhost:8070/docs
 <br><br>
 - O open api do spring docs está bem explicativo sobre o cada endpoint faz, além de ter definições de schema e exemplos prontos de payload (body json); 
 
