@@ -20,10 +20,9 @@ public enum Dice {
     D12(12),
     D20(20),
     D100(100),
-    ERROR(0);
+    ERROR(1);
 
     private final int sides;
-    private static final Random random = new Random();
 
     Dice(final int sides) {
         this.sides = sides;
@@ -61,6 +60,7 @@ public enum Dice {
 
     public int[] roll(final int quantity) {
         validateQuantity(quantity);
+        final Random random = new Random();
 
         final int minDiceResult = 1;
         final int maxDiceResult = sides + 1;
@@ -109,6 +109,10 @@ public enum Dice {
 
     public static int rollOnceAndSum(Dice dice) {
         return dice.rollOnceAndSum();
+    }
+
+    private static String resultsToString(int[] results) {
+        return Arrays.toString(results);
     }
 
 }

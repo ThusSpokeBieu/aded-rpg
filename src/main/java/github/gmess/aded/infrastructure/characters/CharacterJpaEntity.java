@@ -14,7 +14,7 @@ import java.util.UUID;
 @Table(name = "characters")
 @Getter
 @Setter
-public final class CharacterJpaEntity {
+public class CharacterJpaEntity {
 
     @Id
     private UUID id;

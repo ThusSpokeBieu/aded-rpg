@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum CharacterArchetype {
-    Hero("Hero"),
-    Monster("Monster"),
-    Error("Erro");
+    HERO("HERO"),
+    MONSTER("MONSTER"),
+    ERROR("ERROR");
 
     private final String archetype;
 
@@ -17,9 +17,9 @@ public enum CharacterArchetype {
 
     public static CharacterArchetype from(final String archetypeName) {
         return switch (archetypeName.toUpperCase()) {
-            case "HERO" -> Hero;
-            case "MONSTER" -> Monster;
-            default -> Error;
+            case "HERO" -> HERO;
+            case "MONSTER" -> MONSTER;
+            default -> ERROR;
         };
     }
 

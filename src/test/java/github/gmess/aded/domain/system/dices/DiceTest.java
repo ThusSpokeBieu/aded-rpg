@@ -2,7 +2,6 @@ package github.gmess.aded.domain.system.dices;
 
 import github.gmess.aded.domain.exceptions.system.DiceException;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 

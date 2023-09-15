@@ -1,4 +1,4 @@
-package github.gmess.aded.web.api.characters;
+package github.gmess.aded.web.api.v1.characters;
 
 import github.gmess.aded.application.characters.create.CreateCharacterCommand;
 import github.gmess.aded.application.characters.create.CreateCharacterOutput;
@@ -11,10 +11,9 @@ import github.gmess.aded.application.characters.update.UpdateCharacterUseCase;
 import github.gmess.aded.domain.search.Pagination;
 import github.gmess.aded.domain.search.SearchQuery;
 import github.gmess.aded.domain.validation.handler.Notification;
-import github.gmess.aded.web.api.characters.contracts.CharacterResponse;
-import github.gmess.aded.web.api.characters.contracts.CreateCharacterRequest;
-import github.gmess.aded.web.api.characters.contracts.UpdateCharacterRequest;
-import lombok.RequiredArgsConstructor;
+import github.gmess.aded.web.api.v1.characters.contracts.CharacterResponse;
+import github.gmess.aded.web.api.v1.characters.contracts.CreateCharacterRequest;
+import github.gmess.aded.web.api.v1.characters.contracts.UpdateCharacterRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
