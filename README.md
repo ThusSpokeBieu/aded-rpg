@@ -22,18 +22,23 @@ Bem-vindo ao Advanced Dungeon and Dragons (AD&D), uma API baseada em Spring Boot
 
 ## Como instalar/iniciar;
 
-- Você primeiro precisará configurar o ambiente para acessar o banco de dados. Existe já um docker compose para iniciar o postgres caso você queira, basta usar o comando abaixo no root do projeto:
+### Por docker 
+- A forma mais simples de inicializar a aplicação é utilizando o docker.
+
+- Você deve adicionar um arquivo .env com as configurações. Existe um exemplo, o arquivo ".env.example" que pode ser copiado ou renomeado para .env, e já fará a aplicação funcionar corretamente. 
+
+- Com esse arquivo configurado, basta executar o comando: 
 ```bash
 docker compose up -d
 ```
 
-- Após configurado, basta rodar a aplicação com o comando: 
-```bash
-./mvn spring-boot:run
-```
+- A aplicação vai rodar na porta que foi definida na variável "API_PORT" do .env, no caso, por padrão 8070.
+- Após rodar a aplicação, espere um pouco que ela vai gerar o Open API detalhado no seguinte url:  http://localhost:8070/docs
+- Lembre-se que a porta será aquela que definiu no .env
 
-- Pode usar qualquer idea de preferência, ou até mesmo outro comando maven para inicializar a aplicação. Ela irá aplicar as migrações do projeto.
-
+## Outros meios 
+- Pode rodar a aplicação por outros meios também sem problema, 
+- 
 ## Documentação e endpoints.
 - Uma vez que a aplicação estiver rodando, você pode acessar sua documentação pela url: http://localhost:8080/swagger-ui/index.html/
 <br><br>
