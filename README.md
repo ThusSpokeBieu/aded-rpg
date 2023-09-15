@@ -37,7 +37,7 @@ docker compose up -d
 - Lembre-se que a porta será aquela que definiu no .env
 
 ## Outros meios 
-- Pode rodar a aplicação por outros meios também sem problema, 
+- Pode rodar a aplicação por outros meios também sem problema, como pela sua ide preferida e/ou por CLI, mas lembre-se de configurá-la para acessar um banco de dados corretamente.
 
 ## Documentação e endpoints.
 - Uma vez que a aplicação estiver rodando, você pode acessar sua documentação pela url: http://localhost:8070/docs
