@@ -20,7 +20,7 @@ public enum Dice {
     D12(12),
     D20(20),
     D100(100),
-    ERROR(0);
+    ERROR(1);
 
     private final int sides;
 

@@ -18,7 +18,7 @@ import java.util.UUID;
 @Table(name = "actions")
 @Getter
 @Setter
-public final class ActionJpaEntity {
+public class ActionJpaEntity {
     @Id
     private UUID id;
     @ManyToOne
