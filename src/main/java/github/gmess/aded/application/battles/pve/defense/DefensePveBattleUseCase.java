@@ -5,4 +5,5 @@ import github.gmess.aded.domain.validation.handler.Notification;
 import io.vavr.control.Either;
 
 public abstract class DefensePveBattleUseCase
-        extends UseCase<String, Either<Notification, DefensePveBattleOutPut>> {}
+    extends UseCase<String, Either<Notification, DefensePveBattleOutPut>> {
+}

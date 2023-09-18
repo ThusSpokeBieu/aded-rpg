@@ -9,15 +9,15 @@ import java.util.Objects;
 
 public final class DefaultListCharacterUseCase extends ListCharacterUseCase {
 
-    private final CharacterGateway gateway;
+  private final CharacterGateway gateway;
 
-    public DefaultListCharacterUseCase(final CharacterGateway characterGateway) {
-        this.gateway = Objects.requireNonNull(characterGateway);
-    }
+  public DefaultListCharacterUseCase(final CharacterGateway characterGateway) {
+    this.gateway = Objects.requireNonNull(characterGateway);
+  }
 
-    @Override
-    public Pagination<CharacterResponse> execute(final SearchQuery aQuery) {
-        return this.gateway.findAll(aQuery)
-                .map(CharacterResponse::from);
-    }
+  @Override
+  public Pagination<CharacterResponse> execute(final SearchQuery aQuery) {
+    return this.gateway.findAll(aQuery)
+        .map(CharacterResponse::from);
+  }
 }

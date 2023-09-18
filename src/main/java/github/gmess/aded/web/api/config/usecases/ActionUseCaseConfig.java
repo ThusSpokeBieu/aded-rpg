@@ -17,35 +17,32 @@ import java.util.Objects;
 @Configuration
 public class ActionUseCaseConfig {
 
-    private final ActionGateway actionGateway;
-    private final BattleGateway battleGateway;
+  private final ActionGateway actionGateway;
+  private final BattleGateway battleGateway;
 
-    public ActionUseCaseConfig(
-            final ActionGateway actionGateway,
-            final BattleGateway battleGateway) {
-        this.actionGateway = Objects.requireNonNull(actionGateway);
-        this.battleGateway = Objects.requireNonNull(battleGateway);
-    }
+  public ActionUseCaseConfig(
+      final ActionGateway actionGateway,
+      final BattleGateway battleGateway) {
+    this.actionGateway = Objects.requireNonNull(actionGateway);
+    this.battleGateway = Objects.requireNonNull(battleGateway);
+  }
 
-    @Bean
-    public CreateActionUseCase createActionUseCase(
-            final ActionGateway actionGateway
-    ) {
-        return new DefaultCreateAction(actionGateway);
-    }
+  @Bean
+  public CreateActionUseCase createActionUseCase(
+      final ActionGateway actionGateway) {
+    return new DefaultCreateAction(actionGateway);
+  }
 
-    @Bean
-    public ListActionUseCase listActionUseCase(
-            final ActionGateway actionGateway
-    ) {
-        return new DefaultListAction(actionGateway);
-    }
+  @Bean
+  public ListActionUseCase listActionUseCase(
+      final ActionGateway actionGateway) {
+    return new DefaultListAction(actionGateway);
+  }
 
-    @Bean
-    public ListActionByBattleUseCase listActionByBattleUseCase(
-            final ActionGateway actionGateway,
-            final BattleGateway battleGateway
-    ) {
-        return new DefaultListActionByBattle(actionGateway, battleGateway);
-    }
+  @Bean
+  public ListActionByBattleUseCase listActionByBattleUseCase(
+      final ActionGateway actionGateway,
+      final BattleGateway battleGateway) {
+    return new DefaultListActionByBattle(actionGateway, battleGateway);
+  }
 }

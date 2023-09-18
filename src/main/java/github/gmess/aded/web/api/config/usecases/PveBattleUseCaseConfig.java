@@ -22,60 +22,55 @@ import java.util.Objects;
 @Configuration
 public class PveBattleUseCaseConfig {
 
-    private final DndRandomNameClient nameClient;
-    private final CharacterGateway characterGateway;
-    private final BattleGateway battleGateway;
-    private final CreateActionUseCase createActionUseCase;
+  private final DndRandomNameClient nameClient;
+  private final CharacterGateway characterGateway;
+  private final BattleGateway battleGateway;
+  private final CreateActionUseCase createActionUseCase;
 
-    public PveBattleUseCaseConfig(
-            final DndRandomNameClient nameClient,
-            final CharacterGateway characterGateway,
-            final BattleGateway battleGateway,
-            final CreateActionUseCase createActionUseCase) {
-        this.nameClient = Objects.requireNonNull(nameClient);
-        this.characterGateway = Objects.requireNonNull(characterGateway);
-        this.battleGateway = Objects.requireNonNull(battleGateway);
-        this.createActionUseCase = Objects.requireNonNull(createActionUseCase);
-    }
+  public PveBattleUseCaseConfig(
+      final DndRandomNameClient nameClient,
+      final CharacterGateway characterGateway,
+      final BattleGateway battleGateway,
+      final CreateActionUseCase createActionUseCase) {
+    this.nameClient = Objects.requireNonNull(nameClient);
+    this.characterGateway = Objects.requireNonNull(characterGateway);
+    this.battleGateway = Objects.requireNonNull(battleGateway);
+    this.createActionUseCase = Objects.requireNonNull(createActionUseCase);
+  }
 
-    @Bean
-    public StartPveBattleUseCase startPveBattleUseCase(
-            final DndRandomNameClient nameClient,
-            final CharacterGateway characterGateway,
-            final BattleGateway battleGateway
-    ) {
-        return new DefaultStartPveBattle(nameClient, characterGateway, battleGateway);
-    }
+  @Bean
+  public StartPveBattleUseCase startPveBattleUseCase(
+      final DndRandomNameClient nameClient,
+      final CharacterGateway characterGateway,
+      final BattleGateway battleGateway) {
+    return new DefaultStartPveBattle(nameClient, characterGateway, battleGateway);
+  }
 
-    @Bean
-    public InitiativePveBattleUseCase initiativePveBattleUseCasePveBattleUseCase(
-            final BattleGateway battleGateway,
-            final CreateActionUseCase createActionUseCase
-    ) {
-        return new DefaultInitiativePveBattle(battleGateway, createActionUseCase);
-    }
+  @Bean
+  public InitiativePveBattleUseCase initiativePveBattleUseCasePveBattleUseCase(
+      final BattleGateway battleGateway,
+      final CreateActionUseCase createActionUseCase) {
+    return new DefaultInitiativePveBattle(battleGateway, createActionUseCase);
+  }
 
-    @Bean
-    public AttackPveBattleUseCase attackPveBattleUseCase(
-            final BattleGateway battleGateway,
-            final CreateActionUseCase createActionUseCase
-    ) {
-        return new DefaultAttackPveBattle(battleGateway, createActionUseCase);
-    }
+  @Bean
+  public AttackPveBattleUseCase attackPveBattleUseCase(
+      final BattleGateway battleGateway,
+      final CreateActionUseCase createActionUseCase) {
+    return new DefaultAttackPveBattle(battleGateway, createActionUseCase);
+  }
 
-    @Bean
-    public DamagePveBattleUseCase damagePveBattleUseCase(
-            final BattleGateway battleGateway,
-            final CreateActionUseCase createActionUseCase
-    ) {
-        return new DefaultDamagePveBattle(battleGateway, createActionUseCase);
-    }
+  @Bean
+  public DamagePveBattleUseCase damagePveBattleUseCase(
+      final BattleGateway battleGateway,
+      final CreateActionUseCase createActionUseCase) {
+    return new DefaultDamagePveBattle(battleGateway, createActionUseCase);
+  }
 
-    @Bean
-    public DefensePveBattleUseCase defensePveBattleUseCase(
-            final BattleGateway battleGateway,
-            final CreateActionUseCase createActionUseCase
-    ) {
-        return new DefaultDefensePveBattle(battleGateway, createActionUseCase);
-    }
+  @Bean
+  public DefensePveBattleUseCase defensePveBattleUseCase(
+      final BattleGateway battleGateway,
+      final CreateActionUseCase createActionUseCase) {
+    return new DefaultDefensePveBattle(battleGateway, createActionUseCase);
+  }
 }

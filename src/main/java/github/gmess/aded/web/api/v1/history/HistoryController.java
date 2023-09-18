@@ -11,77 +11,71 @@ import io.vavr.Tuple;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class HistoryController implements HistoryAPI{
+public class HistoryController implements HistoryAPI {
 
-    private final ListBattleUseCase listBattles;
-    private final ListActionUseCase listActions;
-    private final ListActionByBattleUseCase listActionByBattle;
+  private final ListBattleUseCase listBattles;
+  private final ListActionUseCase listActions;
+  private final ListActionByBattleUseCase listActionByBattle;
 
-    public HistoryController(
-            final ListBattleUseCase listBattles,
-            final ListActionUseCase listActions,
-            final ListActionByBattleUseCase listActionByBattle) {
-        this.listBattles = listBattles;
-        this.listActions = listActions;
-        this.listActionByBattle = listActionByBattle;
-    }
+  public HistoryController(
+      final ListBattleUseCase listBattles,
+      final ListActionUseCase listActions,
+      final ListActionByBattleUseCase listActionByBattle) {
+    this.listBattles = listBattles;
+    this.listActions = listActions;
+    this.listActionByBattle = listActionByBattle;
+  }
 
-    @Override
-    public Pagination<BattleResponse> listBattles(
-            final String search,
-            final int page,
-            final int perPage,
-            final String sort,
-            final String direction) {
-        return listBattles.execute(
-                new SearchQuery(
-                        page,
-                        perPage,
-                        search,
-                        sort,
-                        direction
-                )
-        );
-    }
+  @Override
+  public Pagination<BattleResponse> listBattles(
+      final String search,
+      final int page,
+      final int perPage,
+      final String sort,
+      final String direction) {
+    return listBattles.execute(
+        new SearchQuery(
+            page,
+            perPage,
+            search,
+            sort,
+            direction));
+  }
 
-    @Override
-    public Pagination<ActionsResponse> listActions(
-            final String search,
-            final int page,
-            final int perPage,
-            final String sort,
-            final String direction) {
-        return listActions.execute(
-                new SearchQuery(
-                        page,
-                        perPage,
-                        search,
-                        sort,
-                        direction
-                )
-        );
-    }
+  @Override
+  public Pagination<ActionsResponse> listActions(
+      final String search,
+      final int page,
+      final int perPage,
+      final String sort,
+      final String direction) {
+    return listActions.execute(
+        new SearchQuery(
+            page,
+            perPage,
+            search,
+            sort,
+            direction));
+  }
 
-    @Override
-    public Pagination<ActionsResponse> listActionsByBattle(
-            final String battleIdOrCode,
-            final String search,
-            final int page,
-            final int perPage,
-            final String sort,
-            final String direction) {
+  @Override
+  public Pagination<ActionsResponse> listActionsByBattle(
+      final String battleIdOrCode,
+      final String search,
+      final int page,
+      final int perPage,
+      final String sort,
+      final String direction) {
 
-        final var idAndQuery = Tuple.of(
-                battleIdOrCode,
-                new SearchQuery(
-                        page,
-                        perPage,
-                        search,
-                        sort,
-                        direction
-                )
-        );
+    final var idAndQuery = Tuple.of(
+        battleIdOrCode,
+        new SearchQuery(
+            page,
+            perPage,
+            search,
+            sort,
+            direction));
 
-        return listActionByBattle.execute(idAndQuery);
-    }
+    return listActionByBattle.execute(idAndQuery);
+  }
 }

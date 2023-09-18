@@ -11,8 +11,9 @@ import java.util.UUID;
 
 @Repository
 public interface ActionRepository extends JpaRepository<ActionJpaEntity, UUID> {
-    Page<ActionJpaEntity> findAllByBattle(BattleJpaEntity battle, Specification<ActionJpaEntity> whereClause, Pageable page);
+  Page<ActionJpaEntity> findAllByBattle(BattleJpaEntity battle, Specification<ActionJpaEntity> whereClause,
+      Pageable page);
 
-    Page<ActionJpaEntity> findAll(Specification<ActionJpaEntity> whereClause, Pageable page);
+  Page<ActionJpaEntity> findAll(Specification<ActionJpaEntity> whereClause, Pageable page);
 
 }

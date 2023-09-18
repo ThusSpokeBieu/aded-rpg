@@ -19,100 +19,95 @@ import static io.vavr.control.Either.left;
 
 public class DefaultAttackPveBattle extends AttackPveBattleUseCase {
 
-    private final BattleGateway battleGateway;
-    private final CreateActionUseCase createAction;
+  private final BattleGateway battleGateway;
+  private final CreateActionUseCase createAction;
 
-    public DefaultAttackPveBattle(
-            final BattleGateway battleGateway,
-            final CreateActionUseCase createAction
-    ) {
-        this.battleGateway = Objects.requireNonNull(battleGateway);
-        this.createAction = Objects.requireNonNull(createAction);
+  public DefaultAttackPveBattle(
+      final BattleGateway battleGateway,
+      final CreateActionUseCase createAction) {
+    this.battleGateway = Objects.requireNonNull(battleGateway);
+    this.createAction = Objects.requireNonNull(createAction);
+  }
+
+  @Override
+  public Either<Notification, AttackPveBattleOutput> execute(final String input) {
+    final var notification = Notification.create();
+
+    Battle battle = battleGateway.tryGetBattleByIdOrCode(input);
+
+    isInAttackTurn(battle);
+
+    final var contenderAction = rollAttack(
+        battle,
+        battle.getContender(),
+        battle.getContenderCharacter());
+
+    final var contestedAction = rollDefense(
+        battle,
+        battle.getContested(),
+        battle.getContestedCharacter());
+
+    battle = setTurnOf(battle, contenderAction, contestedAction);
+
+    battle.validate(notification);
+
+    return notification.hasError() ? left(notification) : getResults(contenderAction, contestedAction);
+  }
+
+  private Either<Notification, AttackPveBattleOutput> getResults(
+      Action contenderAction,
+      Action contestedAction) {
+    return Try.of(() -> AttackPveBattleOutput.from(
+        contenderAction,
+        contestedAction))
+        .toEither()
+        .bimap(Notification::create, out -> out);
+  }
+
+  private void isInAttackTurn(final Battle battle) {
+    if (!battle.getTurn().equals(BattleTurn.ATTACK)) {
+      throw TurnException.with(battle.getTurn(), BattleTurn.ATTACK);
     }
 
-    @Override
-    public Either<Notification, AttackPveBattleOutput> execute(final String input) {
-        final var notification = Notification.create();
+    if (!battle.isActive()) {
+      throw ForbiddenException.with("This battle have already a winner!");
+    }
+  }
 
-        Battle battle = battleGateway.tryGetBattleByIdOrCode(input);
+  private Action rollAttack(
+      final Battle battle,
+      final String who,
+      final Character whoCharacter) {
+    final var movement = whoCharacter.rollAttack();
+    final var action = Action.with(battle, who, whoCharacter, movement);
 
-        isInAttackTurn(battle);
+    return createAction.execute(action);
+  }
 
-        final var contenderAction = rollAttack(
-                battle,
-                battle.getContender(),
-                battle.getContenderCharacter());
+  private Action rollDefense(
+      final Battle battle,
+      final String who,
+      final Character whoCharacter) {
+    final var movement = whoCharacter.rollDefense();
+    final var action = Action.with(battle, who, whoCharacter, movement);
 
-        final var contestedAction = rollDefense(
-                battle,
-                battle.getContested(),
-                battle.getContestedCharacter());
+    return createAction.execute(action);
+  }
 
-        battle = setTurnOf(battle, contenderAction, contestedAction);
-
-        battle.validate(notification);
-
-        return notification.hasError() ? left(notification) : getResults(contenderAction, contestedAction);
+  private Battle setTurnOf(
+      final Battle battle,
+      final Action contenderAction,
+      final Action contestedAction) {
+    if (contenderAction.getTotalResult() > contestedAction.getTotalResult()) {
+      battle.setTurnOf(TurnOf.CONTENDER);
+      battle.setTurn(BattleTurn.DAMAGE);
+    } else {
+      battle.setTurnOf(TurnOf.CONTESTED);
+      battle.setTurn(BattleTurn.DEFENSE);
+      battle.getRound().next();
     }
 
-    private Either<Notification, AttackPveBattleOutput> getResults(
-            Action contenderAction,
-            Action contestedAction
-    ) {
-        return Try.of(() -> AttackPveBattleOutput.from(
-                        contenderAction,
-                        contestedAction))
-                .toEither()
-                .bimap(Notification::create, out -> out);
-    }
-
-    private void isInAttackTurn(final Battle battle) {
-        if (!battle.getTurn().equals(BattleTurn.ATTACK)) {
-            throw TurnException.with(battle.getTurn(), BattleTurn.ATTACK);
-        }
-
-        if (!battle.isActive()) {
-            throw ForbiddenException.with("This battle have already a winner!");
-        }
-    }
-
-    private Action rollAttack(
-            final Battle battle,
-            final String who,
-            final Character whoCharacter
-    ) {
-        final var movement = whoCharacter.rollAttack();
-        final var action = Action.with(battle, who, whoCharacter, movement);
-
-        return createAction.execute(action);
-    }
-
-    private Action rollDefense(
-            final Battle battle,
-            final String who,
-            final Character whoCharacter
-    ) {
-        final var movement = whoCharacter.rollDefense();
-        final var action = Action.with(battle, who, whoCharacter, movement);
-
-        return createAction.execute(action);
-    }
-
-    private Battle setTurnOf(
-            final Battle battle,
-            final Action contenderAction,
-            final Action contestedAction
-    ) {
-        if (contenderAction.getTotalResult() > contestedAction.getTotalResult()) {
-            battle.setTurnOf(TurnOf.CONTENDER);
-            battle.setTurn(BattleTurn.DAMAGE);
-        } else {
-            battle.setTurnOf(TurnOf.CONTESTED);
-            battle.setTurn(BattleTurn.DEFENSE);
-            battle.getRound().next();
-        }
-
-        return battleGateway.update(battle);
-    }
+    return battleGateway.update(battle);
+  }
 
 }

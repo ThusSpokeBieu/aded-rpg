@@ -4,5 +4,6 @@ import github.gmess.aded.application.UseCase;
 import github.gmess.aded.domain.validation.handler.Notification;
 import io.vavr.control.Either;
 
-public abstract class CreateCharacterUseCase extends UseCase<CreateCharacterCommand, Either<Notification, CreateCharacterOutput>> {
+public abstract class CreateCharacterUseCase
+    extends UseCase<CreateCharacterCommand, Either<Notification, CreateCharacterOutput>> {
 }

@@ -8,15 +8,15 @@ import github.gmess.aded.web.api.v1.history.contracts.BattleResponse;
 import java.util.Objects;
 
 public class DefaultListBattleUseCase extends ListBattleUseCase {
-    private final BattleGateway gateway;
+  private final BattleGateway gateway;
 
-    public DefaultListBattleUseCase(final BattleGateway battleGateway) {
-        this.gateway = Objects.requireNonNull(battleGateway);
-    }
+  public DefaultListBattleUseCase(final BattleGateway battleGateway) {
+    this.gateway = Objects.requireNonNull(battleGateway);
+  }
 
-    @Override
-    public Pagination<BattleResponse> execute(final SearchQuery aQuery) {
-        return this.gateway.findAll(aQuery)
-                .map(BattleResponse::from);
-    }
+  @Override
+  public Pagination<BattleResponse> execute(final SearchQuery aQuery) {
+    return this.gateway.findAll(aQuery)
+        .map(BattleResponse::from);
+  }
 }

@@ -10,16 +10,16 @@ import static github.gmess.aded.domain.exceptions.NotFoundException.notFoundWith
 
 public final class DefaultDeleteCharacterUseCase extends DeleteCharacterUseCase {
 
-    private final CharacterGateway gateway;
+  private final CharacterGateway gateway;
 
-    public DefaultDeleteCharacterUseCase(final CharacterGateway gateway) {
-        this.gateway = gateway;
-    }
+  public DefaultDeleteCharacterUseCase(final CharacterGateway gateway) {
+    this.gateway = gateway;
+  }
 
-    @Override
-    public void execute(final String input) {
-        Try.run(() -> gateway.deleteById(CharacterID.from(input)))
-                .getOrElseThrow(notFoundWith(Character.class, input));
-    }
+  @Override
+  public void execute(final String input) {
+    Try.run(() -> gateway.deleteById(CharacterID.from(input)))
+        .getOrElseThrow(notFoundWith(Character.class, input));
+  }
 
 }

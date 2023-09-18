@@ -16,35 +16,35 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class CharacterUseCaseConfig {
-    private final CharacterGateway gateway;
+  private final CharacterGateway gateway;
 
-    public CharacterUseCaseConfig(final CharacterGateway gateway) {
-        this.gateway = gateway;
-    }
+  public CharacterUseCaseConfig(final CharacterGateway gateway) {
+    this.gateway = gateway;
+  }
 
-    @Bean
-    public CreateCharacterUseCase createCategoryUseCase() {
-        return new DefaultCreateCharacterUseCase(gateway);
-    }
+  @Bean
+  public CreateCharacterUseCase createCategoryUseCase() {
+    return new DefaultCreateCharacterUseCase(gateway);
+  }
 
-    @Bean
-    public ListCharacterUseCase listCharacterUseCase() {
-        return new DefaultListCharacterUseCase(gateway);
-    }
+  @Bean
+  public ListCharacterUseCase listCharacterUseCase() {
+    return new DefaultListCharacterUseCase(gateway);
+  }
 
-    @Bean
-    public GetCharacterById getCharacterById() {
-        return new DefaultCharacterById(gateway);
-    }
+  @Bean
+  public GetCharacterById getCharacterById() {
+    return new DefaultCharacterById(gateway);
+  }
 
-    @Bean
-    public UpdateCharacterUseCase updateCharacterUseCase() {
-        return new DefaultUpdateCharacterUseCase(gateway);
-    }
+  @Bean
+  public UpdateCharacterUseCase updateCharacterUseCase() {
+    return new DefaultUpdateCharacterUseCase(gateway);
+  }
 
-    @Bean
-    public DeleteCharacterUseCase deleteCharacterUseCase() {
-        return new DefaultDeleteCharacterUseCase(gateway);
-    }
+  @Bean
+  public DeleteCharacterUseCase deleteCharacterUseCase() {
+    return new DefaultDeleteCharacterUseCase(gateway);
+  }
 
 }

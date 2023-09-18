@@ -14,24 +14,24 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(value = ForbiddenException.class)
-    public ResponseEntity<?> handleForbiddenException(final ForbiddenException ex) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ApiError.from(ex));
-    }
+  @ExceptionHandler(value = ForbiddenException.class)
+  public ResponseEntity<?> handleForbiddenException(final ForbiddenException ex) {
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ApiError.from(ex));
+  }
 
-    @ExceptionHandler(value = NotFoundException.class)
-    public ResponseEntity<?> handleNotFoundException(final NotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiError.from(ex));
-    }
+  @ExceptionHandler(value = NotFoundException.class)
+  public ResponseEntity<?> handleNotFoundException(final NotFoundException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiError.from(ex));
+  }
 
-    @ExceptionHandler(value = DomainException.class)
-    public ResponseEntity<?> handleDomainException(final DomainException ex) {
-        return ResponseEntity.unprocessableEntity().body(ApiError.from(ex));
-    }
+  @ExceptionHandler(value = DomainException.class)
+  public ResponseEntity<?> handleDomainException(final DomainException ex) {
+    return ResponseEntity.unprocessableEntity().body(ApiError.from(ex));
+  }
 
-    record ApiError(String message, List<Error> errors) {
-        static ApiError from(final DomainException ex) {
-            return new ApiError(ex.getMessage(), ex.getErrors());
-        }
+  record ApiError(String message, List<Error> errors) {
+    static ApiError from(final DomainException ex) {
+      return new ApiError(ex.getMessage(), ex.getErrors());
     }
+  }
 }

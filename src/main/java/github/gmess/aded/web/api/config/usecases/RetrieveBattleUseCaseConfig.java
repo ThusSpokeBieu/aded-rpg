@@ -16,18 +16,17 @@ import java.util.Objects;
 @Configuration
 public class RetrieveBattleUseCaseConfig {
 
-    private final BattleGateway battleGateway;
+  private final BattleGateway battleGateway;
 
-    public RetrieveBattleUseCaseConfig(
-            final BattleGateway battleGateway) {
-        this.battleGateway = Objects.requireNonNull(battleGateway);
-    }
+  public RetrieveBattleUseCaseConfig(
+      final BattleGateway battleGateway) {
+    this.battleGateway = Objects.requireNonNull(battleGateway);
+  }
 
-    @Bean
-    public ListBattleUseCase listBattleUseCase(
-            final BattleGateway battleGateway
-    ) {
-        return new DefaultListBattleUseCase(battleGateway);
-    }
+  @Bean
+  public ListBattleUseCase listBattleUseCase(
+      final BattleGateway battleGateway) {
+    return new DefaultListBattleUseCase(battleGateway);
+  }
 
 }

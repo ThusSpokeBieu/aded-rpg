@@ -7,14 +7,14 @@ import java.util.Objects;
 
 public class DefaultCreateAction extends CreateActionUseCase {
 
-    private final ActionGateway actionGateway;
+  private final ActionGateway actionGateway;
 
-    public DefaultCreateAction(final ActionGateway actionGateway) {
-        this.actionGateway = Objects.requireNonNull(actionGateway);
-    }
+  public DefaultCreateAction(final ActionGateway actionGateway) {
+    this.actionGateway = Objects.requireNonNull(actionGateway);
+  }
 
-    @Override
-    public Action execute(Action input) {
-        return actionGateway.create(input);
-    }
+  @Override
+  public Action execute(Action input) {
+    return actionGateway.create(input);
+  }
 }

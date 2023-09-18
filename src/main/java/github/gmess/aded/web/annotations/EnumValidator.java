@@ -15,12 +15,12 @@ import java.lang.annotation.*;
 @ReportAsSingleViolation
 public @interface EnumValidator {
 
-    Class<? extends Enum<?>> enumClazz();
+  Class<? extends Enum<?>> enumClazz();
 
-    String message() default "Value is not valid";
+  String message() default "Value is not valid";
 
-    Class<?>[] groups() default {};
+  Class<?>[] groups() default {};
 
-    Class<? extends Payload>[] payload() default {};
+  Class<? extends Payload>[] payload() default {};
 
 }

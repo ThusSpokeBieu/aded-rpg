@@ -12,22 +12,20 @@ import static github.gmess.aded.domain.exceptions.NotFoundException.notFoundWith
 
 public final class DefaultCharacterById extends GetCharacterById {
 
-    private final CharacterGateway gateway;
+  private final CharacterGateway gateway;
 
-    public DefaultCharacterById(final CharacterGateway gateway) {
-        this.gateway = Objects.requireNonNull(gateway);
-    }
+  public DefaultCharacterById(final CharacterGateway gateway) {
+    this.gateway = Objects.requireNonNull(gateway);
+  }
 
-    @Override
-    public CharacterResponse execute(String input) {
-        final var id = CharacterID.from(input);
+  @Override
+  public CharacterResponse execute(String input) {
+    final var id = CharacterID.from(input);
 
-        return Try.of( () -> this.gateway.findById(id)
-                            .map(CharacterResponse::from)
-                            .getOrElseThrow(notFoundWith(Character.class, id)))
-                .getOrElseThrow(notFoundWith(Character.class, id));
-    }
-
-
+    return Try.of(() -> this.gateway.findById(id)
+        .map(CharacterResponse::from)
+        .getOrElseThrow(notFoundWith(Character.class, id)))
+        .getOrElseThrow(notFoundWith(Character.class, id));
+  }
 
 }

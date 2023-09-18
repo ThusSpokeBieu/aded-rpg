@@ -7,14 +7,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class ForbiddenException extends DomainException {
-    protected ForbiddenException(String aMessage, List<Error> anErrors) {
-        super(aMessage, anErrors);
-    }
+  protected ForbiddenException(String aMessage, List<Error> anErrors) {
+    super(aMessage, anErrors);
+  }
 
-    public static ForbiddenException with(
-            final String anError
-    ) {
-        return new ForbiddenException(anError, Collections.emptyList());
-    }
+  public static ForbiddenException with(
+      final String anError) {
+    return new ForbiddenException(anError, Collections.emptyList());
+  }
 
 }

@@ -8,13 +8,20 @@ import java.util.List;
 
 public interface CharacterGateway {
 
-    Pagination<Character> findAll(final SearchQuery query);
-    Option<Character> findById(final CharacterID id);
-    Option<Character> findByCharacterClass(final String name);
-    Option<Character> getRandomMonster();
-    Character create(final Character character);
-    void deleteById(final CharacterID id);
-    Character update(final Character character);
-    List<CharacterID> existsByIds(final Iterable<CharacterID> ids);
+  Pagination<Character> findAll(final SearchQuery query);
+
+  Option<Character> findById(final CharacterID id);
+
+  Option<Character> findByCharacterClass(final String name);
+
+  Option<Character> getRandomMonster();
+
+  Character create(final Character character);
+
+  void deleteById(final CharacterID id);
+
+  Character update(final Character character);
+
+  List<CharacterID> existsByIds(final Iterable<CharacterID> ids);
 
 }

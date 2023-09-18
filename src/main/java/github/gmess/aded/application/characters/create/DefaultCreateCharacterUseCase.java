@@ -10,36 +10,35 @@ import static io.vavr.control.Either.left;
 
 public final class DefaultCreateCharacterUseCase extends CreateCharacterUseCase {
 
-    private final CharacterGateway gateway;
+  private final CharacterGateway gateway;
 
-    public DefaultCreateCharacterUseCase(final CharacterGateway characterGateway) {
-        gateway = characterGateway;
-    }
+  public DefaultCreateCharacterUseCase(final CharacterGateway characterGateway) {
+    gateway = characterGateway;
+  }
 
-    @Override
-    public Either<Notification, CreateCharacterOutput> execute(final CreateCharacterCommand command) {
-        final var notification = Notification.create();
+  @Override
+  public Either<Notification, CreateCharacterOutput> execute(final CreateCharacterCommand command) {
+    final var notification = Notification.create();
 
-        final var character = Character.newCharacter(
-                command.characterClass(),
-                command.archetype(),
-                command.hp(),
-                command.strength(),
-                command.defense(),
-                command.agility(),
-                command.dicesQuantity(),
-                command.dice()
-        );
+    final var character = Character.newCharacter(
+        command.characterClass(),
+        command.archetype(),
+        command.hp(),
+        command.strength(),
+        command.defense(),
+        command.agility(),
+        command.dicesQuantity(),
+        command.dice());
 
-        character.validate(notification);
+    character.validate(notification);
 
-        return notification.hasError() ? left(notification) : create(character);
-    }
+    return notification.hasError() ? left(notification) : create(character);
+  }
 
-    private Either<Notification, CreateCharacterOutput> create(final Character character) {
-        return Try.of(() -> this.gateway.create(character))
-                .toEither()
-                .bimap(Notification::create, CreateCharacterOutput::from);
-    }
+  private Either<Notification, CreateCharacterOutput> create(final Character character) {
+    return Try.of(() -> this.gateway.create(character))
+        .toEither()
+        .bimap(Notification::create, CreateCharacterOutput::from);
+  }
 
 }

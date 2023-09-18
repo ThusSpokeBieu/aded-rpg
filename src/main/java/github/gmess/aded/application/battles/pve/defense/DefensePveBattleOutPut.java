@@ -12,4 +12,5 @@ package github.gmess.aded.application.battles.pve.defense;
 //    }
 //}
 
-public interface DefensePveBattleOutPut {}
+public interface DefensePveBattleOutPut {
+}

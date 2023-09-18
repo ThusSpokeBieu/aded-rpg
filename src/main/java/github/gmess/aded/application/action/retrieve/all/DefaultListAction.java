@@ -8,15 +8,15 @@ import github.gmess.aded.web.api.v1.history.contracts.ActionsResponse;
 import java.util.Objects;
 
 public class DefaultListAction extends ListActionUseCase {
-    private final ActionGateway gateway;
+  private final ActionGateway gateway;
 
-    public DefaultListAction(final ActionGateway actionGateway) {
-        this.gateway = Objects.requireNonNull(actionGateway);
-    }
+  public DefaultListAction(final ActionGateway actionGateway) {
+    this.gateway = Objects.requireNonNull(actionGateway);
+  }
 
-    @Override
-    public Pagination<ActionsResponse> execute(final SearchQuery aQuery) {
-        return this.gateway.findAll(aQuery)
-                .map(ActionsResponse::from);
-    }
+  @Override
+  public Pagination<ActionsResponse> execute(final SearchQuery aQuery) {
+    return this.gateway.findAll(aQuery)
+        .map(ActionsResponse::from);
+  }
 }

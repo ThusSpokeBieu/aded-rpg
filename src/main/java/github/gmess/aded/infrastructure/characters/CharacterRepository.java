@@ -15,16 +15,16 @@ import java.util.UUID;
 @Repository
 public interface CharacterRepository extends JpaRepository<CharacterJpaEntity, UUID> {
 
-    Page<CharacterJpaEntity> findAll(Specification<CharacterJpaEntity> whereClause, Pageable page);
+  Page<CharacterJpaEntity> findAll(Specification<CharacterJpaEntity> whereClause, Pageable page);
 
-    @Query(value = "select c from Character c where c.id = :id")
-    Option<CharacterJpaEntity> findByIdOption(@Param("id") UUID id);
+  @Query(value = "select c from Character c where c.id = :id")
+  Option<CharacterJpaEntity> findByIdOption(@Param("id") UUID id);
 
-    Option<CharacterJpaEntity> findByCharacterClass(String characterClass);
+  Option<CharacterJpaEntity> findByCharacterClass(String characterClass);
 
-    @Query(value = "SELECT * FROM characters WHERE archetype = 'MONSTER' ORDER BY RANDOM() LIMIT 1", nativeQuery = true)
-    Option<CharacterJpaEntity> findRandomMonster();
+  @Query(value = "SELECT * FROM characters WHERE archetype = 'MONSTER' ORDER BY RANDOM() LIMIT 1", nativeQuery = true)
+  Option<CharacterJpaEntity> findRandomMonster();
 
-    @Query(value = "select c.id from Character c where c.id in :ids")
-    List<UUID> existsByIds(@Param("ids") List<UUID> ids);
+  @Query(value = "select c.id from Character c where c.id in :ids")
+  List<UUID> existsByIds(@Param("ids") List<UUID> ids);
 }

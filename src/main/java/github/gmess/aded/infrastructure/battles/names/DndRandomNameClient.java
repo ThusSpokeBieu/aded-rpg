@@ -12,59 +12,58 @@ import java.util.Random;
 @Component
 public class DndRandomNameClient {
 
-    @Value("${random.dnd.name.endpoint}")
-    private String nameGeneratorEndpoint;
-    private final RestTemplate rest;
+  @Value("${random.dnd.name.endpoint}")
+  private String nameGeneratorEndpoint;
+  private final RestTemplate rest;
 
-    public DndRandomNameClient(final RestTemplateBuilder restBuilder) {
-        this.rest = Objects.requireNonNull(restBuilder.build());
-    }
+  public DndRandomNameClient(final RestTemplateBuilder restBuilder) {
+    this.rest = Objects.requireNonNull(restBuilder.build());
+  }
 
-    public String[] fetchRandomDndNames() {
-        return Try.of(
-                () -> rest.postForObject(
-                        nameGeneratorEndpoint,
-                        null,
-                        String[].class
-                ))
-                .getOrElse(defaultArrayName);
-    }
+  public String[] fetchRandomDndNames() {
+    return Try.of(
+        () -> rest.postForObject(
+            nameGeneratorEndpoint,
+            null,
+            String[].class))
+        .getOrElse(defaultArrayName);
+  }
 
-    public String shuffleResultAndGetRandom(String[] results) {
-        final var random = new Random().nextInt(results.length);
-        return results[random];
-    }
+  public String shuffleResultAndGetRandom(String[] results) {
+    final var random = new Random().nextInt(results.length);
+    return results[random];
+  }
 
-    private static final String[] defaultArrayName = {
-            "Tractockus",
-            "Wirsag",
-            "Twonzo",
-            "Eorington",
-            "Tigum",
-            "Prandita",
-            "Ordo",
-            "Dalibella",
-            "Hortaketta",
-            "Alash Mortonium",
-            "Tulietta",
-            "Herlim",
-            "Anadora the Lost",
-            "Lostling",
-            "Endolinha",
-            "Odanti",
-            "Zardinark",
-            "Arlasta Nupple",
-            "Gruzanelle",
-            "Kepvan Whistle",
-            "Trystrame",
-            "Aegis",
-            "Envol",
-            "Plotton",
-            "Zardinark",
-            "Jepotah Curdlish",
-            "Wilgonston",
-            "Oddam Flim",
-            "Qyator",
-            "Frandomi"
-    };
+  private static final String[] defaultArrayName = {
+      "Tractockus",
+      "Wirsag",
+      "Twonzo",
+      "Eorington",
+      "Tigum",
+      "Prandita",
+      "Ordo",
+      "Dalibella",
+      "Hortaketta",
+      "Alash Mortonium",
+      "Tulietta",
+      "Herlim",
+      "Anadora the Lost",
+      "Lostling",
+      "Endolinha",
+      "Odanti",
+      "Zardinark",
+      "Arlasta Nupple",
+      "Gruzanelle",
+      "Kepvan Whistle",
+      "Trystrame",
+      "Aegis",
+      "Envol",
+      "Plotton",
+      "Zardinark",
+      "Jepotah Curdlish",
+      "Wilgonston",
+      "Oddam Flim",
+      "Qyator",
+      "Frandomi"
+  };
 }

@@ -15,14 +15,14 @@ import java.util.UUID;
 
 @Repository
 public interface BattleRepository extends JpaRepository<BattleJpaEntity, UUID> {
-    Page<BattleJpaEntity> findAll(Specification<BattleJpaEntity> whereClause, Pageable page);
+  Page<BattleJpaEntity> findAll(Specification<BattleJpaEntity> whereClause, Pageable page);
 
-    @Query(value = "select b from Battle b where b.id = :id")
-    Option<BattleJpaEntity> findByIdOption(@Param("id") UUID id);
+  @Query(value = "select b from Battle b where b.id = :id")
+  Option<BattleJpaEntity> findByIdOption(@Param("id") UUID id);
 
-    @Query(value = "SELECT * FROM battles WHERE code = :code LIMIT 1", nativeQuery = true)
-    Option<BattleJpaEntity> findByCode(@Param("code") String code);
+  @Query(value = "SELECT * FROM battles WHERE code = :code LIMIT 1", nativeQuery = true)
+  Option<BattleJpaEntity> findByCode(@Param("code") String code);
 
-    @Query(value = "select b.id from Battle b where b.id in :ids")
-    List<UUID> existsByIds(@Param("ids") List<UUID> ids);
+  @Query(value = "select b.id from Battle b where b.id in :ids")
+  List<UUID> existsByIds(@Param("ids") List<UUID> ids);
 }

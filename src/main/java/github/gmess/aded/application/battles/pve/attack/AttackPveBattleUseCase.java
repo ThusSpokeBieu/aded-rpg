@@ -7,4 +7,3 @@ import io.vavr.control.Either;
 public abstract class AttackPveBattleUseCase extends UseCase<String, Either<Notification, AttackPveBattleOutput>> {
 
 }
-

@@ -23,88 +23,85 @@ import static github.gmess.aded.infrastructure.utils.SpecificationUtils.like;
 @Component
 public final class CharacterDbGateway implements CharacterGateway {
 
-    private final CharacterRepository repo;
+  private final CharacterRepository repo;
 
-    @Override
-    public Character create(final Character character) {
-        return save(character);
+  @Override
+  public Character create(final Character character) {
+    return save(character);
+  }
+
+  @Override
+  public Option<Character> findById(final CharacterID id) {
+    return repo.findByIdOption(id.getUUID())
+        .map(CharacterJpaEntity::toAggregate);
+  }
+
+  @Override
+  public Option<Character> findByCharacterClass(final String character) {
+    return repo.findByCharacterClass(character)
+        .map(CharacterJpaEntity::toAggregate);
+  }
+
+  @Override
+  public Option<Character> getRandomMonster() {
+    return repo.findRandomMonster()
+        .map(CharacterJpaEntity::toAggregate);
+  }
+
+  @Override
+  public void deleteById(final CharacterID id) {
+    final var uuid = id.getUUID();
+    if (this.repo.existsById(uuid)) {
+      this.repo.deleteById(uuid);
     }
+  }
 
-    @Override
-    public Option<Character> findById(final CharacterID id) {
-        return repo.findByIdOption(id.getUUID())
-                .map(CharacterJpaEntity::toAggregate);
-    }
+  @Override
+  public Character update(final Character character) {
+    return save(character);
+  }
 
-    @Override
-    public Option<Character> findByCharacterClass(final String character) {
-        return repo.findByCharacterClass(character)
-                .map(CharacterJpaEntity::toAggregate);
-    }
+  @Override
+  public Pagination<Character> findAll(final SearchQuery query) {
+    final var page = PageRequest.of(
+        query.page(),
+        query.perPage(),
+        Sort.by(Direction.fromString(query.direction()), query.sort()));
 
-    @Override
-    public Option<Character> getRandomMonster() {
-        return repo.findRandomMonster()
-                .map(CharacterJpaEntity::toAggregate);
-    }
+    final var specifications = Optional.ofNullable(query.terms())
+        .filter(str -> !str.isBlank())
+        .map(this::assembleSpecification)
+        .orElse(null);
 
-    @Override
-    public void deleteById(final CharacterID id) {
-        final var uuid = id.getUUID();
-        if (this.repo.existsById(uuid)) {
-            this.repo.deleteById(uuid);
-        }
-    }
+    final var pageResult = this.repo.findAll(Specification.where(specifications), page);
 
-    @Override
-    public Character update(final Character character) {
-        return save(character);
-    }
+    return new Pagination<>(
+        pageResult.getNumber(),
+        pageResult.getSize(),
+        pageResult.getTotalElements(),
+        pageResult.map(CharacterJpaEntity::toAggregate).toList());
+  }
 
-    @Override
-    public Pagination<Character> findAll(final SearchQuery query) {
-        final var page = PageRequest.of(
-                query.page(),
-                query.perPage(),
-                Sort.by(Direction.fromString(query.direction()), query.sort())
-        );
+  @Override
+  public List<CharacterID> existsByIds(final Iterable<CharacterID> categoryIDs) {
 
-        final var specifications = Optional.ofNullable(query.terms())
-                .filter(str -> !str.isBlank())
-                .map(this::assembleSpecification)
-                .orElse(null);
+    final var ids = StreamSupport.stream(categoryIDs.spliterator(), false)
+        .map(CharacterID::getUUID)
+        .toList();
 
-        final var pageResult =
-                this.repo.findAll(Specification.where(specifications), page);
+    return this.repo.existsByIds(ids).stream()
+        .map(CharacterID::from)
+        .toList();
+  }
 
-        return new Pagination<>(
-                pageResult.getNumber(),
-                pageResult.getSize(),
-                pageResult.getTotalElements(),
-                pageResult.map(CharacterJpaEntity::toAggregate).toList()
-        );
-    }
+  private Character save(final Character character) {
+    return this.repo.save(CharacterJpaEntity.from(character)).toAggregate();
+  }
 
-    @Override
-    public List<CharacterID> existsByIds(final Iterable<CharacterID> categoryIDs) {
-
-        final var ids = StreamSupport.stream(categoryIDs.spliterator(), false)
-                .map(CharacterID::getUUID)
-                .toList();
-
-        return this.repo.existsByIds(ids).stream()
-                .map(CharacterID::from)
-                .toList();
-    }
-
-    private Character save(final Character character) {
-        return this.repo.save(CharacterJpaEntity.from(character)).toAggregate();
-    }
-
-    private Specification<CharacterJpaEntity> assembleSpecification(final String str) {
-        final Specification<CharacterJpaEntity> characterClassLike = like("characterClass", str);
-        final Specification<CharacterJpaEntity> archetypeLike = like("archetype", str);
-        return characterClassLike.or(archetypeLike);
-    }
+  private Specification<CharacterJpaEntity> assembleSpecification(final String str) {
+    final Specification<CharacterJpaEntity> characterClassLike = like("characterClass", str);
+    final Specification<CharacterJpaEntity> archetypeLike = like("archetype", str);
+    return characterClassLike.or(archetypeLike);
+  }
 
 }

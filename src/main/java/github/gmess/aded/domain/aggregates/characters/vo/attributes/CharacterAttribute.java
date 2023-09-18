@@ -7,10 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CharacterAttribute extends ValueObject {
-    protected int value;
+  protected int value;
 
-    protected CharacterAttribute(final int aValue) {
-        value = aValue;
-    }
+  protected CharacterAttribute(final int aValue) {
+    value = aValue;
+  }
 
 }

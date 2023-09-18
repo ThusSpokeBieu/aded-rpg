@@ -6,5 +6,5 @@ import github.gmess.aded.web.api.v1.characters.contracts.CharacterResponse;
 import io.vavr.control.Either;
 
 public abstract class UpdateCharacterUseCase
-        extends UseCase<UpdateCharacterCommand, Either<Notification, CharacterResponse>> {
+    extends UseCase<UpdateCharacterCommand, Either<Notification, CharacterResponse>> {
 }

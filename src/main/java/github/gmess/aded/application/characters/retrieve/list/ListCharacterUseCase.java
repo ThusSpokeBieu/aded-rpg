@@ -6,5 +6,5 @@ import github.gmess.aded.domain.search.SearchQuery;
 import github.gmess.aded.web.api.v1.characters.contracts.CharacterResponse;
 
 public abstract class ListCharacterUseCase
-        extends UseCase<SearchQuery, Pagination<CharacterResponse>> {
+    extends UseCase<SearchQuery, Pagination<CharacterResponse>> {
 }

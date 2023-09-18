@@ -22,105 +22,101 @@ import static io.vavr.control.Either.left;
 
 public class DefaultStartPveBattle extends StartPveBattleUseCase {
 
-    private final DndRandomNameClient nameClient;
-    private final CharacterGateway characterGateway;
-    private final BattleGateway battleGateway;
+  private final DndRandomNameClient nameClient;
+  private final CharacterGateway characterGateway;
+  private final BattleGateway battleGateway;
 
-    public DefaultStartPveBattle(
-            final DndRandomNameClient nameClient,
-            final CharacterGateway characterGateway,
-            final BattleGateway battleGateway) {
-        this.nameClient = Objects.requireNonNull(nameClient);
-        this.characterGateway = Objects.requireNonNull(characterGateway);
-        this.battleGateway = Objects.requireNonNull(battleGateway);
-    }
+  public DefaultStartPveBattle(
+      final DndRandomNameClient nameClient,
+      final CharacterGateway characterGateway,
+      final BattleGateway battleGateway) {
+    this.nameClient = Objects.requireNonNull(nameClient);
+    this.characterGateway = Objects.requireNonNull(characterGateway);
+    this.battleGateway = Objects.requireNonNull(battleGateway);
+  }
 
-    @Override
-    public Either<Notification, StartPveBattleOutput> execute(StartPveBattleCommand input) {
-        final var notification = Notification.create();
+  @Override
+  public Either<Notification, StartPveBattleOutput> execute(StartPveBattleCommand input) {
+    final var notification = Notification.create();
 
-        final var contender = input.contender();
-        final var contested = randomizeNameIfBlank(input.contested());
-        final var contenderCharacter = getCharacter(input.contenderClass(), notification).getOrNull();
-        final var contestedCharacter = getContestedCharacter(input.contestedClass(), notification).getOrNull();
+    final var contender = input.contender();
+    final var contested = randomizeNameIfBlank(input.contested());
+    final var contenderCharacter = getCharacter(input.contenderClass(), notification).getOrNull();
+    final var contestedCharacter = getContestedCharacter(input.contestedClass(), notification).getOrNull();
 
-        if (notification.hasError()) return left(notification);
+    if (notification.hasError())
+      return left(notification);
 
-        contestedCharacterIsMonster(contestedCharacter.getArchetype(), notification);
+    contestedCharacterIsMonster(contestedCharacter.getArchetype(), notification);
 
-        final var battle = Battle.newBattle(
-                contender,
-                contested,
-                contenderCharacter,
-                contestedCharacter
-        );
+    final var battle = Battle.newBattle(
+        contender,
+        contested,
+        contenderCharacter,
+        contestedCharacter);
 
-        battle.validate(notification);
+    battle.validate(notification);
 
-        return notification.hasError() ? left(notification) : start(battle);
-    }
+    return notification.hasError() ? left(notification) : start(battle);
+  }
 
-    private Either<Notification, StartPveBattleOutput> start(final Battle battle) {
-        return Try.of( () -> battleGateway.create(battle))
-                .toEither()
-                .bimap(Notification::create, StartPveBattleOutput::from);
-    }
+  private Either<Notification, StartPveBattleOutput> start(final Battle battle) {
+    return Try.of(() -> battleGateway.create(battle))
+        .toEither()
+        .bimap(Notification::create, StartPveBattleOutput::from);
+  }
 
-    private String randomizeNameIfBlank(final String name) {
-        if (!StringUtils.isEmpty(name)) return name;
+  private String randomizeNameIfBlank(final String name) {
+    if (!StringUtils.isEmpty(name))
+      return name;
 
-        final var randomNames = nameClient.fetchRandomDndNames();
+    final var randomNames = nameClient.fetchRandomDndNames();
 
-        return nameClient.shuffleResultAndGetRandom(randomNames);
-    }
+    return nameClient.shuffleResultAndGetRandom(randomNames);
+  }
 
-    private Option<Character> getCharacter(
-            final String input,
-            final Notification notification) {
+  private Option<Character> getCharacter(
+      final String input,
+      final Notification notification) {
 
-        return Try.of(() -> characterGateway
-                        .findByCharacterClass(input)
-                        .orElse(() -> characterGateway.findById(CharacterID.from(input))))
+    return Try.of(() -> characterGateway
+        .findByCharacterClass(input)
+        .orElse(() -> characterGateway.findById(CharacterID.from(input))))
 
-                .getOrElse(Option.none())
+        .getOrElse(Option.none())
 
-                .onEmpty(() -> notification.append(
-                        NotFoundException.withNameOrId(
-                                Character.class,
-                                input
-                        ))
-                );
-    }
+        .onEmpty(() -> notification.append(
+            NotFoundException.withNameOrId(
+                Character.class,
+                input)));
+  }
 
-    private Option<Character> getContestedCharacter(
-            final String input,
-            final Notification notification
-    ) {
-        if (StringUtils.isEmpty(input))
-            return getRandomMonster(input, notification);
+  private Option<Character> getContestedCharacter(
+      final String input,
+      final Notification notification) {
+    if (StringUtils.isEmpty(input))
+      return getRandomMonster(input, notification);
 
-        return getCharacter(input, notification);
-    }
+    return getCharacter(input, notification);
+  }
 
-    private Option<Character> getRandomMonster(
-            final String input,
-            final Notification notification
-    ) {
-        return characterGateway.getRandomMonster()
-                .onEmpty(() -> notification.append(
-                        NotFoundException.withNameOrId(Character.class, input)
-                ));
-    }
+  private Option<Character> getRandomMonster(
+      final String input,
+      final Notification notification) {
+    return characterGateway.getRandomMonster()
+        .onEmpty(() -> notification.append(
+            NotFoundException.withNameOrId(Character.class, input)));
+  }
 
-    private void contestedCharacterIsMonster(
-            final CharacterArchetype archetype,
-            final Notification notification) {
+  private void contestedCharacterIsMonster(
+      final CharacterArchetype archetype,
+      final Notification notification) {
 
-        if (archetype.equals(CharacterArchetype.MONSTER))
-            return;
+    if (archetype.equals(CharacterArchetype.MONSTER))
+      return;
 
-        notification.append(
-                new Error("Contested character should be a monster! Please, choose a correct one or let it blank and we will choose for you.")
-        );
-    }
+    notification.append(
+        new Error(
+            "Contested character should be a monster! Please, choose a correct one or let it blank and we will choose for you."));
+  }
 }
