@@ -41,8 +41,7 @@ public class ActionUseCaseConfig {
 
   @Bean
   public ListActionByBattleUseCase listActionByBattleUseCase(
-      final ActionGateway actionGateway,
-      final BattleGateway battleGateway) {
-    return new DefaultListActionByBattle(actionGateway, battleGateway);
+      final ActionGateway actionGateway) {
+    return new DefaultListActionByBattle(actionGateway);
   }
 }

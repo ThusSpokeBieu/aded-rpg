@@ -2,6 +2,9 @@ package github.gmess.aded.infrastructure.utils;
 
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
+
+import java.util.UUID;
+
 import org.springframework.data.jpa.domain.Specification;
 
 public final class SpecificationUtils {
@@ -21,6 +24,14 @@ public final class SpecificationUtils {
     return (root, query, cb) -> {
       Join<T, J> join = root.join(joinProp);
       Predicate predicate = cb.like(cb.upper(join.get(pop)), like(term.toUpperCase()));
+      return predicate;
+    };
+  }
+
+  public static <T, J> Specification<T> joinEquals(final String joinProp, final String pop, final UUID term) {
+    return (root, query, cb) -> {
+      Join<T, J> join = root.join(joinProp);
+      Predicate predicate = cb.equal(join.get(pop), term);
       return predicate;
     };
   }
